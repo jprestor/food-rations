@@ -1,0 +1,22 @@
+{
+    "collectionName": "components_all_files",
+    "info": {
+        "displayName": "Файлы",
+        "icon": "file-contract",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "item": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images",
+                "files",
+                "videos",
+                "audios"
+            ]
+        }
+    }
+}

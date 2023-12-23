@@ -1,0 +1,25 @@
+{
+    "collectionName": "components_misc_delivery_data",
+    "info": {
+        "displayName": "Цена за доставку",
+        "icon": "book",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "zonePrices": {
+            "displayName": "deliveryZones",
+            "type": "component",
+            "repeatable": true,
+            "component": "misc.delivery-zones"
+        },
+        "cartAmountForDeliveryDiscount": {
+            "type": "integer",
+            "required": true
+        },
+        "deliveryDiscount": {
+            "type": "integer",
+            "required": true
+        }
+    }
+}

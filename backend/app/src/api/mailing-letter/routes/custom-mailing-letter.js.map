@@ -1,0 +1,1 @@
+{"version":3,"file":"custom-mailing-letter.js","sourceRoot":"","sources":["../../../../../src/api/mailing-letter/routes/custom-mailing-letter.ts"],"names":[],"mappings":";;AAAA,kBAAe;IACb,MAAM,EAAE;QACN;YACE,MAAM,EAAE,MAAM;YACd,IAAI,EAAE,4BAA4B;YAClC,OAAO,EAAE,sCAAsC;SAChD;KACF;CACF,CAAC"}

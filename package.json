@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "dev:back": "npm run dev --prefix ./backend/",
+    "dev:front": "npm run dev --prefix ./frontend/",
+    "setup:back": "cd backend && npm install",
+    "setup:front": "cd frontend && npm install",
+    "clear": "cd ./backend && rm -rf .cache && rm -rf dist && cd ../frontend rm -rf .next",
+    "setup": "npm install && npm run setup:back && npm run setup:front",
+    "dev": "npm run clear && concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "repo:upstream": "git fetch upstream && git merge upstream/main",
+    "copyTypes": "node copyTypes.js"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.1"
+  }
+}

@@ -1,0 +1,66 @@
+{
+    "kind": "collectionType",
+    "collectionName": "orders",
+    "info": {
+        "singularName": "order",
+        "pluralName": "orders",
+        "displayName": "Заказы",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "phone": {
+            "type": "string"
+        },
+        "user": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "plugin::users-permissions.user"
+        },
+        "userID": {
+            "type": "integer",
+            "required": false
+        },
+        "address": {
+            "type": "component",
+            "repeatable": false,
+            "component": "user.address"
+        },
+        "productsPrice": {
+            "type": "integer"
+        },
+        "deliveryPrice": {
+            "type": "integer"
+        },
+        "totalPrice": {
+            "type": "integer"
+        },
+        "comment": {
+            "type": "text"
+        },
+        "discount": {
+            "type": "integer"
+        },
+        "cart": {
+            "type": "component",
+            "repeatable": true,
+            "component": "all.cart-item"
+        },
+        "executionStatus": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::order-status.order-status"
+        },
+        "paymentStatus": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::payment-status.payment-status"
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_all_cart_items",
+  "info": {
+    "displayName": "Элемент корзины",
+    "icon": "shopping-cart",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
+    "count": {
+      "type": "integer",
+      "default": 0
+    },
+    "cartItemPrice": {
+      "type": "integer",
+      "required": true
+    }
+  }
+}

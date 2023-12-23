@@ -1,0 +1,39 @@
+@layer components {
+  a {
+    @apply cursor-pointer transition-all;
+  }
+
+  .link {
+    @apply hover:text-primary cursor-pointer no-underline transition;
+  }
+
+  .link-underline {
+    position: relative;
+    width: fit-content;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #4e5ffc;
+      transition: 0.2s;
+    }
+  }
+
+  .link-underline-on-hover {
+    @apply link-underline;
+
+    &::before {
+      width: 25%;
+      opacity: 0;
+    }
+
+    &:hover::before {
+      width: 100%;
+      opacity: 1;
+    }
+  }
+}

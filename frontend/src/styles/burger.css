@@ -1,0 +1,38 @@
+@layer components {
+  .burger {
+    position: relative;
+    aspect-ratio: 1/1;
+    width: 32px;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      right: 5px;
+      height: 2px;
+      background: #3a58f8;
+      border-radius: 3px;
+      transition: 0.2s ease-in-out;
+    }
+
+    &::before {
+      top: 11px;
+      width: 22px;
+    }
+
+    &::after {
+      top: 19px;
+      width: 14px;
+    }
+
+    &.is-white {
+      &::before,
+      &::after {
+        background: #fff;
+      }
+    }
+
+    &.is-open {
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_all_refs",
+  "info": {
+    "displayName": "Настройки сайта",
+    "icon": "arrow-alt-circle-right",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": false,
+      "unique": false
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    },
+    "fields": {
+      "type": "component",
+      "repeatable": true,
+      "component": "all.field"
+    }
+  }
+}

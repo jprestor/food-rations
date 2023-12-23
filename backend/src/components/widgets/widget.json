@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_all_widgets",
+  "info": {
+    "displayName": "Виджет",
+    "icon": "charging-station",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "widget": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::widget.widget"
+    }
+  }
+}

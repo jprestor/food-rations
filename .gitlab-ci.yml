@@ -1,0 +1,24 @@
+stages:
+  - deploy
+
+deploy-stage:
+  stage: deploy
+  environment:
+    name: staging
+  variables:
+    CI: 'false'
+  script:
+    - whoami
+    - cd /home/octo/$PROJECT_NAME/
+    - export NVM_DIR="/home/octo/.nvm"
+    - source $NVM_DIR/nvm.sh
+    - nvm use 16
+    - git pull
+    - cd backend/
+    - npm ci
+    - npm run build
+    - pm2 restart $PM2_PROCESS_BACKEND_NAME
+    - cd ../frontend/
+    - npm ci
+    - npm run build
+    - pm2 restart $PM2_PROCESS_FRONTEND_NAME

@@ -1,0 +1,33 @@
+{
+    "collectionName": "components_all_menus",
+    "info": {
+        "displayName": "Меню",
+        "icon": "align-justify",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "unique": false,
+            "required": true
+        },
+        "url": {
+            "type": "string",
+            "required": true,
+            "unique": false
+        },
+        "isMain": {
+            "type": "boolean",
+            "default": true
+        },
+        "isInHeader": {
+            "type": "boolean",
+            "default": true
+        },
+        "isInFooter": {
+            "type": "boolean",
+            "default": true
+        }
+    }
+}

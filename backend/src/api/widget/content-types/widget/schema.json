@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "widgets",
+  "info": {
+    "singularName": "widget",
+    "pluralName": "widgets",
+    "displayName": "Виджеты",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "actions": {
+      "type": "json"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "componentName": {
+      "type": "string"
+    },
+    "data": {
+      "type": "json"
+    },
+    "files": {
+      "type": "component",
+      "repeatable": true,
+      "component": "all.files"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+    "kind": "singleType",
+    "collectionName": "miscs",
+    "info": {
+        "singularName": "misc",
+        "pluralName": "miscs",
+        "displayName": "Разное",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "menu": {
+            "type": "component",
+            "repeatable": true,
+            "component": "misc.menu"
+        },
+        "socials": {
+            "displayName": "social_network",
+            "type": "component",
+            "repeatable": true,
+            "component": "misc.social-network"
+        },
+        "metrics": {
+            "type": "component",
+            "repeatable": false,
+            "component": "misc.metrics"
+        },
+        "refs": {
+            "displayName": "refs",
+            "type": "component",
+            "repeatable": true,
+            "component": "misc.refs"
+        },
+        "deliveryData": {
+            "type": "component",
+            "repeatable": false,
+            "component": "misc.delivery-data",
+            "required": true
+        }
+    }
+}

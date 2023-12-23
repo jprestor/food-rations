@@ -1,0 +1,32 @@
+{
+    "kind": "collectionType",
+    "collectionName": "mailing_letters",
+    "info": {
+        "singularName": "mailing-letter",
+        "pluralName": "mailing-letters",
+        "displayName": "Письма для пользователей",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "text": {
+            "type": "text"
+        },
+        "notice": {
+            "type": "text"
+        },
+        "templateName": {
+            "type": "string",
+            "unique": true
+        },
+        "subject": {
+            "type": "string"
+        }
+    }
+}

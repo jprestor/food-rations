@@ -1,0 +1,13 @@
+{
+    "collectionName": "components_all_fields",
+    "info": {
+        "displayName": "Поле",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "value": {
+            "type": "string"
+        }
+    }
+}

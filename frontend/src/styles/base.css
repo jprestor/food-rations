@@ -1,0 +1,33 @@
+@layer base {
+  html,
+  body {
+    @apply text-neutral bg-base-200;
+  }
+
+  body {
+    @apply text-base;
+  }
+
+  svg {
+    @apply h-auto max-w-full;
+  }
+
+  sup {
+    @apply top-[-0.2em];
+  }
+}
+
+@layer components {
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .v-margin {
+    @apply my-50 first-of-type:mt-0 md:my-24;
+  }
+  .v-padding {
+    @apply pt-50 md:pt-23 pb-52 md:pb-24;
+  }
+}

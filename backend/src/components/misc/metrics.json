@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_all_metrics",
+  "info": {
+    "displayName": "Метрики",
+    "icon": "archive",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "yandex_id": {
+      "type": "string"
+    },
+    "google_id": {
+      "type": "string"
+    },
+    "js_code": {
+      "type": "text"
+    }
+  }
+}

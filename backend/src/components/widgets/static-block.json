@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_widgets_static_blocks",
+  "info": {
+    "displayName": "Статичный блок",
+    "icon": "file-contract",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "aside": {
+      "type": "text"
+    }
+  }
+}

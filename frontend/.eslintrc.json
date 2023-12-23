@@ -1,0 +1,16 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "jsx-a11y/alt-text": 0
+  },
+  "overrides": [
+    {
+      "files": ["./next.config.js", "./tailwind.config.js"],
+      // This is the default parser of ESLint
+      "parser": "espree",
+      "parserOptions": {
+        "ecmaVersion": "latest"
+      }
+    }
+  ]
+}

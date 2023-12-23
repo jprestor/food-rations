@@ -1,0 +1,57 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "license": "MIT",
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "scripts": {
+    "build": "strapi build",
+    "dev": "strapi develop",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "transfer": "strapi transfer --to https://xn----7sbhkold2df4gc.xn--p1ai/strapi/admin/ --force"
+  },
+  "dependencies": {
+    "@_sh/strapi-plugin-ckeditor": "2.0.4",
+    "@a2seven/yoo-checkout": "^1.1.4",
+    "@strapi/design-system": "^1.13.2",
+    "@strapi/plugin-color-picker": "4.16.2",
+    "@strapi/plugin-documentation": "4.16.2",
+    "@strapi/plugin-i18n": "4.16.2",
+    "@strapi/plugin-users-permissions": "4.16.2",
+    "@strapi/provider-email-mailgun": "4.16.2",
+    "@strapi/provider-email-nodemailer": "4.16.2",
+    "@strapi/strapi": "4.16.2",
+    "@turf/turf": "^6.5.0",
+    "axios": "1.6.2",
+    "crypto-js": "4.2.0",
+    "dayjs": "1.11.10",
+    "lodash": "4.17.21",
+    "pg": "8.11.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "^5.3.4",
+    "slugify": "1.6.6",
+    "strapi-plugin-duplicate-button": "1.1.14",
+    "strapi-plugin-multi-select": "1.2.2",
+    "strapi-plugin-placeholder": "4.4.0",
+    "strapi-plugin-populate-deep": "3.0.1",
+    "strapi-plugin-transformer": "3.1.2",
+    "styled-components": "^5.3.3",
+    "uuid": "9.0.1"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "4.2.1",
+    "@types/uuid": "9.0.7"
+  },
+  "engines": {
+    "node": ">=14.19.1 <=18.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "8c151642-dcae-49e9-91f1-25b42623f5df"
+  }
+}

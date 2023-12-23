@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_all_social_networks",
+    "info": {
+        "displayName": "Соцсети",
+        "icon": "calendar-alt",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "unique": false,
+            "required": true
+        },
+        "link": {
+            "type": "string",
+            "required": true
+        },
+        "image": {
+            "type": "media",
+            "multiple": false,
+            "required": true,
+            "allowedTypes": [
+                "images"
+            ]
+        }
+    }
+}

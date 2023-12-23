@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_product_nutritional_values",
+  "info": {
+    "displayName": "Пищевая ценность",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "energy": {
+      "type": "integer"
+    },
+    "proteins": {
+      "type": "integer"
+    },
+    "fats": {
+      "type": "integer"
+    },
+    "carbohydrates": {
+      "type": "integer"
+    }
+  }
+}

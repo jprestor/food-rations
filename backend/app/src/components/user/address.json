@@ -1,0 +1,31 @@
+{
+    "collectionName": "components_user_addresses",
+    "info": {
+        "displayName": "Адрес",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "street": {
+            "type": "string"
+        },
+        "house": {
+            "type": "string"
+        },
+        "apartment": {
+            "type": "string"
+        },
+        "intercom": {
+            "type": "string"
+        },
+        "entrance": {
+            "type": "string"
+        },
+        "floor": {
+            "type": "string"
+        },
+        "addressName": {
+            "type": "string"
+        }
+    }
+}

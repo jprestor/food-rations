@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_requests",
+  "info": {
+    "singularName": "form-request",
+    "pluralName": "form-requests",
+    "displayName": "Формы (Заказать звонок)",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "zipcode": {
+      "type": "string"
+    },
+    "pageUrl": {
+      "type": "string"
+    },
+    "commentary": {
+      "type": "text"
+    }
+  }
+}

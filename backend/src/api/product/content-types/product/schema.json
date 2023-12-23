@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Товары",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "customField",
+      "options": {
+        "preset": "toolbar"
+      },
+      "customField": "plugin::ckeditor5.CKEditor"
+    },
+    "price": {
+      "required": true,
+      "type": "integer"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "weight": {
+      "type": "integer"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-category.product-category"
+    },
+    "nutritionalValue": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.nutritional-value"
+    },
+    "order": {
+      "type": "integer",
+      "default": 10
+    },
+    "date": {
+      "type": "date"
+    },
+    "weekday": {
+      "type": "enumeration",
+      "enum": [
+        "Понедельник:1",
+        "Вторник:2",
+        "Среда:3",
+        "Четверг:4",
+        "Пятница:5",
+        "Суббота:6",
+        "Воскресенье:7"
+      ]
+    }
+  }
+}

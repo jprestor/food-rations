@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_misc_delivery_zones",
+  "info": {
+    "displayName": "deliveryZones",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "polygon": {
+      "type": "json",
+      "required": true
+    },
+    "cost": {
+      "type": "integer",
+      "required": true
+    },
+    "color": {
+      "type": "customField",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+      "customField": "plugin::color-picker.color",
+      "required": true
+    }
+  }
+}

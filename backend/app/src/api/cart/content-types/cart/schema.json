@@ -1,0 +1,32 @@
+{
+    "kind": "collectionType",
+    "collectionName": "carts",
+    "info": {
+        "singularName": "cart",
+        "pluralName": "carts",
+        "displayName": "Корзины",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "totalPrice": {
+            "type": "integer"
+        },
+        "items": {
+            "type": "component",
+            "repeatable": true,
+            "component": "all.cart-item"
+        },
+        "removed": {
+            "type": "component",
+            "repeatable": true,
+            "component": "all.cart-item"
+        },
+        "uuid": {
+            "type": "string"
+        }
+    }
+}
