@@ -67,9 +67,8 @@ export default function FormOrder({ className }: { className?: string }) {
       const data = {
         ...formValues,
       };
-      const res: any = await createOrder.mutateAsync(data);
-      const orderId = res.data.id;
-      router.push(NAV.checkoutConfirm(orderId));
+      const order = await createOrder.mutateAsync(data);
+      router.push(NAV.checkoutConfirm(order.id));
       toast.success('Ваш заказ создан');
     } catch (error) {
       console.log('onSubmit error', error);
@@ -82,12 +81,12 @@ export default function FormOrder({ className }: { className?: string }) {
       <form
         className={cn(
           'flex flex-col gap-14',
-          !isAuthenticated && 'pointer-events-none',
+          !isAuthenticated && 'pointer-events-none opacity-50',
         )}
         onSubmit={handleSubmit(onSubmit)}
       >
         <section className={cn(!isAuthenticated && 'hidden')}>
-          <h2 className="H3 mb-5">Ваши данные</h2>
+          <h2 className="text-2xl mb-5">Ваши данные</h2>
           <div className="grid gap-3">
             <TextInput
               label="Телефон"
@@ -102,25 +101,21 @@ export default function FormOrder({ className }: { className?: string }) {
           </div>
         </section>
 
-        <section className={cn(className)}>
-          <h3 className="H3 mb-5">Выберите адрес доставки</h3>
-          <UserAddresses
-            onAddressCardSelect={(address) =>
-              address ? setValue('address', address) : resetField('address')
-            }
-            defaultShowAddressFields
-          />
-        </section>
+        <UserAddresses
+          onAddressCardSelect={(address) =>
+            address ? setValue('address', address) : resetField('address')
+          }
+          defaultShowAddressFields
+        />
 
         <TextInput
-          className="mb-10"
-          label="Телефон"
+          label="Комментарий к заказу"
           error={errors?.comment?.message}
           textarea
           {...register('comment')}
         />
         <Button
-          className="max-w-xs"
+          className="max-w-xs btn-primary"
           loading={isSubmitting}
           disabled={isEmptyCart || isSubmitting}
           type="submit"

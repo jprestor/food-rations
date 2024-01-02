@@ -73,7 +73,7 @@ const TextInput = forwardRef<RefType, ITextInput>(
 
         {label && <p className="field-label">{label}</p>}
         {children}
-        {error && <div className="field-error">{error}</div>}
+        {error && <div className="text-sm pt-1 field-error">{error}</div>}
 
         {onReset && (
           <a

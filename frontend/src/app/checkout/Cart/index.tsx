@@ -9,7 +9,8 @@ import { useOrderPrices } from '@/models/order';
 export default function OrderCart() {
   const cart = useCart();
   const orderPrices = useOrderPrices();
-  const { discount = 0, deliveryCost, totalPrice } = orderPrices.data || {};
+  const { deliveryDiscount, deliveryPrice, totalPrice } =
+    orderPrices.data || {};
   const isEmptyCart =
     cart.data === null || (!!cart.data && cart.data.items.length < 1);
 
@@ -39,15 +40,15 @@ export default function OrderCart() {
                 <div>{cart.data?.totalPrice} товара</div>
                 <div>{cart.data?.totalPrice} ₽</div>
               </div>
-              {discount > 0 && (
+              {deliveryDiscount && (
                 <div className="text-primary flex justify-between">
                   <div>Скидка</div>
-                  <div>{discount} ₽</div>
+                  <div>{deliveryDiscount} ₽</div>
                 </div>
               )}
               <div className="flex justify-between">
                 <div className="mr-8">Доставка</div>
-                <div>{deliveryCost} ₽</div>
+                <div>{deliveryPrice} ₽</div>
               </div>
             </div>
 

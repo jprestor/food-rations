@@ -17,7 +17,7 @@
       "type": "integer",
       "required": true
     },
-    "deliveryDiscount": {
+    "deliveryDiscountAmount": {
       "type": "integer",
       "required": true
     },

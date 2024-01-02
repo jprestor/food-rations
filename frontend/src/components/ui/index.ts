@@ -1,13 +1,11 @@
 export { default as Link } from './Link';
 export { default as Button } from './Button';
 export { default as Image } from './Image';
-export { default as Loader } from './Loader';
 export { default as LoaderPage } from './LoaderPage';
 export { default as Drawer } from './Drawer';
 export { default as Modal } from './Modal';
 export { default as Svg } from './Svg';
 export { default as Tabs } from './Tabs';
-export { default as Collapse } from './Collapse';
 export { default as Counter } from './Counter';
 export { default as Skeleton } from './Skeleton';
 export { default as Slider } from './Slider';

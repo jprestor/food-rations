@@ -28,4 +28,8 @@ export default ({ env }) => ({
       size: 10,
     },
   },
+  'sms-auth': {
+    enabled: true,
+    resolve: './src/plugins/sms-auth',
+  },
 });

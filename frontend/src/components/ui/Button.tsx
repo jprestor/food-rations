@@ -1,6 +1,5 @@
 import { cn } from '@/lib';
 
-import Loader from './Loader';
 import Link from './Link';
 
 type Variant = 'green' | 'white' | 'outline-black' | 'outline-white';
@@ -47,8 +46,8 @@ export default function Button({
         <button className={style} type={type} onClick={onClick} form={form}>
           {children}
           {loading && (
-            <div className="absolute inset-0 flex items-center justify-center rounded-[40px] bg-[rgba(32,32,39,.7)]">
-              <Loader />
+            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-[rgba(32,32,39,.7)]">
+              <span className="loading loading-spinner text-primary loading-sm" />
             </div>
           )}
         </button>

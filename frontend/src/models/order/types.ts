@@ -11,9 +11,9 @@ export type Order = {
   userId: number;
   address: Address;
   cart: CartItem[];
-  productsPrice: number;
+  cartPrice: number;
   deliveryPrice: number;
-  discount: number;
+  deliveryDiscount: number;
   totalPrice: number;
   executionStatus: { id: number; name: string }[];
   paymentStatus: { id: number; name: string }[];
@@ -22,9 +22,10 @@ export type Order = {
 };
 
 export type OrderPrices = {
-  deliveryCost: number;
-  discount: number;
-  totalPrice: number;
+  cartPrice: number | null;
+  deliveryPrice: number | null;
+  deliveryDiscount: number | null;
+  totalPrice: number | null;
 };
 
 export type OrderDeliveryData = {

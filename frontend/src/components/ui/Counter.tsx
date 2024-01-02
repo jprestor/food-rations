@@ -21,15 +21,15 @@ export default function Counter({
         className,
       )}
     >
-      <a className={cn('link')} onClick={onDec}>
+      <button className={cn('link hover:scale-125')} onClick={onDec}>
         <Svg id="minus" width={24} height={24} />
-      </a>
+      </button>
 
-      <span className="">{count}</span>
+      <span>{count}</span>
 
-      <a className={cn('link')} onClick={onInc}>
+      <button className={cn('link hover:scale-125')} onClick={onInc}>
         <Svg id="plus" width={24} height={24} />
-      </a>
+      </button>
     </div>
   );
 }

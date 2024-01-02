@@ -13,24 +13,7 @@ import { cn } from '@/lib';
 
 import Svg from './Svg';
 
-interface IModal {
-  toggle: React.ReactNode;
-  toggleStyle?: string;
-  onOpen?: any;
-  onClose?: any;
-  size?: 'sm' | 'md' | 'lg';
-  innerStyle?: string;
-  crossStyle?: string;
-  children?:
-    | React.ReactNode
-    | React.FC<{
-        isOpen: boolean;
-        setIsOpen: Dispatch<SetStateAction<boolean>>;
-      }>;
-  className?: string;
-}
-
-const Modal: React.FC<IModal> = memo(
+const Modal = memo(
   ({
     toggle,
     toggleStyle,
@@ -39,38 +22,52 @@ const Modal: React.FC<IModal> = memo(
     size = 'md',
     innerStyle,
     crossStyle,
+    externalIsOpen,
     children,
     className,
+  }: {
+    toggle?: React.ReactNode;
+    toggleStyle?: string;
+    onOpen?: any;
+    onClose?: any;
+    externalIsOpen?: boolean;
+    size?: 'sm' | 'md' | 'lg';
+    innerStyle?: string;
+    crossStyle?: string;
+    children?:
+      | React.ReactNode
+      | React.FC<{
+          isOpen: boolean;
+          setIsOpen: Dispatch<SetStateAction<boolean>>;
+        }>;
+    className?: string;
   }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const duration = 250;
 
-    const openModal = (e: any) => {
+    const openModal = () => {
       setIsOpen(true);
       setTimeout(() => setIsVisible(true));
       if (onOpen) onOpen();
     };
 
-    const closeModal = useCallback(
-      (e: any) => {
-        setIsVisible(false);
-        setTimeout(() => setIsOpen(false), duration);
-        if (onClose) onClose();
-      },
-      [onClose],
-    );
+    const closeModal = useCallback(() => {
+      setIsVisible(false);
+      setTimeout(() => setIsOpen(false), duration);
+      if (onClose) onClose();
+    }, [onClose]);
 
     const closeOnOuterClick = (e: React.MouseEvent) => {
       if ((e.target as HTMLElement).classList.contains('ui-modal')) {
-        closeModal(e);
+        closeModal();
       }
     };
 
     const closeOnEscPress = useCallback(
       (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
-          closeModal(e);
+          closeModal();
         }
       },
       [closeModal],
@@ -81,6 +78,13 @@ const Modal: React.FC<IModal> = memo(
       return () =>
         document.removeEventListener('keydown', closeOnEscPress, false);
     }, [closeOnEscPress]);
+
+    useEffect(() => {
+      if (typeof externalIsOpen !== 'undefined') {
+        console.log('externalIsOpen', externalIsOpen);
+        externalIsOpen ? openModal() : closeModal();
+      }
+    }, [externalIsOpen]);
 
     return (
       <>

@@ -13,5 +13,10 @@ export default function FormLoginWrapped() {
     return null;
   }
 
-  return <FormLogin callback={router.refresh} />;
+  return (
+    <section className="mb-14">
+      <h3 className="text-xl font-semibold mb-5">Войти в личный кабинет</h3>
+      <FormLogin /* callback={router.refresh} */ />
+    </section>
+  );
 }

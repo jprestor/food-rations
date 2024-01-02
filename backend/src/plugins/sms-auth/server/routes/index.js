@@ -4,18 +4,13 @@ module.exports = {
     routes: [
       {
         method: 'POST',
-        path: '/login',
+        path: '/login-by-code',
         handler: 'auth.loginByCode',
       },
       {
         method: 'POST',
         path: '/send-code',
         handler: 'auth.sendCode',
-      },
-      {
-        method: 'GET',
-        path: '/test',
-        handler: 'auth.test',
       },
     ],
   },

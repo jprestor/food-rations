@@ -2,9 +2,11 @@ import { api, ApiError } from '@/lib';
 import Cookies from 'js-cookie';
 import type { Address } from '@/models/commonTypes';
 import type { Order, OrderPrices, OrderDeliveryData } from './types';
+import { type DeliveryData } from '@/models/misc/types';
 
 const ORDERS_ROUTE = '/orders';
-const CALCULATE_ORDER_PRICES_ROUTE = '/orders/calculate-prices';
+const CALCULATE_ORDER_PRICES_ROUTE = '/orders/prices';
+const CHECK_IS_DELIVERY_AVAILABLE_ROUTE = '/orders/check-is-delivery-available';
 
 export interface ICreateOrderData {
   phone: string;
@@ -27,13 +29,15 @@ export async function createOrder(data: ICreateOrderData) {
 
 export async function getOrderPrices(deliveryAddressCoords: number[]) {
   const res = await api(
-    `${CALCULATE_ORDER_PRICES_ROUTE}?deliveryAddressCoords=${deliveryAddressCoords}`,
+    `${CALCULATE_ORDER_PRICES_ROUTE}?coords=${JSON.stringify(
+      deliveryAddressCoords,
+    )}`,
   );
   if (!res.ok) {
     throw new ApiError(getOrderPrices.name, await res.json(), res.status);
   }
-  const resData: { data: OrderPrices } = await res.json();
-  return resData.data;
+  const resData: OrderPrices = await res.json();
+  return resData;
 }
 
 export async function fetchOrderDetail(id: number) {
@@ -53,4 +57,19 @@ export async function getOrderDeliveryData() {
 export async function setOrderDeliveryData(data: OrderDeliveryData) {
   Cookies.set('deliveryData', JSON.stringify(data));
   return data;
+}
+
+export async function checkIsDeliveryAvailable(coords: number[]) {
+  const res = await api(
+    `${CHECK_IS_DELIVERY_AVAILABLE_ROUTE}?coords=${JSON.stringify(coords)}`,
+  );
+  if (!res.ok) {
+    throw new ApiError(
+      checkIsDeliveryAvailable.name,
+      await res.json(),
+      res.status,
+    );
+  }
+  const resData: DeliveryData['zonePrices'][number] = await res.json();
+  return resData;
 }

@@ -5,27 +5,48 @@ import type { User } from './types';
 import type { Order } from '@/models/order';
 import type { Address } from '@/models/commonTypes';
 
-export const LOGIN_ROUTE = '/auth/local';
+export const GET_SMS_CODE_ROUTE = '/sms-auth/send-code';
+export const LOGIN_BY_CODE_ROUTE = '/sms-auth/login-by-code';
 export const CHECK_AUTH_ROUTE = '/users/me';
 export const UPDATE_USER_ROUTE = '/users';
 export const GET_USER_ORDERS_ROUTE = '/orders';
 
-export async function loginUser({
-  identifier,
-  password,
+// Отправляет смс код для авторизации пользователю
+// и создает пользователя если его еще нет в базе
+export async function sendSmsCode({
+  phone,
+  name,
 }: {
-  identifier: string;
-  password: string;
+  phone: string;
+  name?: string;
+}) {
+  const res = await api(GET_SMS_CODE_ROUTE, undefined, {
+    method: 'POST',
+    body: JSON.stringify({ phone, name }),
+  });
+  if (!res.ok) {
+    throw new ApiError(sendSmsCode.name, await res.json(), res.status);
+  }
+  const resData: string = await res.json();
+  return resData;
+}
+
+export async function loginByCode({
+  code,
+  phone,
+}: {
+  code: string;
+  phone: string;
 }) {
   const params = {
     populate: 'deep',
   };
-  const res = await api(LOGIN_ROUTE, params, {
+  const res = await api(LOGIN_BY_CODE_ROUTE, params, {
     method: 'POST',
-    body: JSON.stringify({ identifier, password }),
+    body: JSON.stringify({ code, phone }),
   });
   if (!res.ok) {
-    throw new ApiError(loginUser.name, await res.json(), res.status);
+    throw new ApiError(loginByCode.name, await res.json(), res.status);
   }
   const resData: { user: User; jwt: string } = await res.json();
   Cookies.set('authToken', resData.jwt, { expires: 30 });

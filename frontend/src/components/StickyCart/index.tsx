@@ -39,13 +39,15 @@ export default function StickyCart({ className }: { className?: string }) {
           </div>
 
           <div className="text-sm mt-auto">
-            {orderPrices.data?.deliveryCost && (
-              <div className="mb-2 flex">
-                <div>Доставка</div>
-                <div className="mx-1">·</div>
-                <div className="">{orderPrices.data.deliveryCost} ₽</div>
-              </div>
-            )}
+            <div className="mb-2 flex items-center gap-2">
+              <p>Доставка</p>
+              <span>·</span>
+              {orderPrices.data?.deliveryPrice ? (
+                <span>{orderPrices.data?.deliveryPrice} ₽</span>
+              ) : (
+                <span className="loading loading-spinner text-primary loading-sm" />
+              )}
+            </div>
 
             <Link className="mt-4 btn btn-primary" to="/checkout">
               Оформить за {cart.data!.totalPrice} ₽

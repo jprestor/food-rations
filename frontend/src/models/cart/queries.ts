@@ -41,7 +41,7 @@ export function useAddToCart() {
     mutationFn: addToCart,
     onSuccess: (data, variables, context) => {
       queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries({ queryKey: orderQueries.pricesKey });
+      queryClient.invalidateQueries(orderQueries.prices());
     },
   });
 }
@@ -53,7 +53,7 @@ export function useAddToCartMultiple() {
     mutationFn: addToCartMultiple,
     onSuccess: (data, variables, context) => {
       queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries({ queryKey: orderQueries.pricesKey });
+      queryClient.invalidateQueries(orderQueries.prices());
     },
   });
 }
@@ -65,7 +65,7 @@ export function useRemoveFromCart() {
     mutationFn: removeFromCart,
     onSuccess: (data, variables, context) => {
       queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries({ queryKey: orderQueries.pricesKey });
+      queryClient.invalidateQueries(orderQueries.prices());
     },
   });
 }
@@ -77,7 +77,7 @@ export function useRestoreFromDeleted() {
     mutationFn: restoreFromDeleted,
     onSuccess: (data, variables, context) => {
       queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries({ queryKey: orderQueries.pricesKey });
+      queryClient.invalidateQueries(orderQueries.prices());
     },
   });
 }

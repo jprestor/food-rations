@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
-  loginUser,
+  loginByCode,
   logoutUser,
   checkAuth,
   updateUser,
@@ -41,7 +41,7 @@ export function useLogin() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [...BASE_KEY, 'login'],
-    mutationFn: loginUser,
+    mutationFn: loginByCode,
     onSuccess: (data) => {
       queryClient.setQueryData(userQueries.getUser().queryKey, data);
     },

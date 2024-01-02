@@ -1,7 +1,7 @@
 /**
  * cart service
  */
-
+import { factories } from '@strapi/strapi';
 import _ from 'lodash';
 import utils from '@strapi/utils';
 import dayjs from 'dayjs';
@@ -35,44 +35,45 @@ type Cart = {
   totalPrice: number;
 };
 
-export default () => {
-  const populateCart: any = [
-    'items.product.categories',
-    'items.product.image',
-    'removed.product.categories',
-    'removed.product.image',
-  ];
+const populateCart: any = [
+  'items.product.categories',
+  'items.product.image',
+  'removed.product.categories',
+  'removed.product.image',
+];
 
-  const calcItemPrice = (productPrice: number, count: number) =>
-    productPrice * count;
+const calcItemPrice = (productPrice: number, count: number) =>
+  productPrice * count;
 
-  const calcTotalPrice = (items: CartItem[]) =>
-    items.reduce((acc: number, { cartItemPrice }) => acc + cartItemPrice, 0);
+const calcTotalPrice = (items: CartItem[]) =>
+  items.reduce((acc: number, { cartItemPrice }) => acc + cartItemPrice, 0);
 
-  const getProductEntry = async (id: number): Promise<any> =>
-    await strapi.entityService.findOne('api::product.product', id, {
-      populate: ['product.image', 'categories'],
-    });
+const getProductEntry = async (id: number): Promise<any> =>
+  await strapi.entityService.findOne('api::product.product', id, {
+    populate: ['product.image', 'categories'],
+  });
 
-  const getCartEntry = async (uuid: string): Promise<Cart | null> =>
-    await strapi.db.query('api::cart.cart').findOne({
-      where: { uuid },
-      populate: populateCart,
-    });
+const getCartEntry = async (uuid: string): Promise<Cart | null> =>
+  await strapi.db.query('api::cart.cart').findOne({
+    where: { uuid },
+    populate: populateCart,
+  });
 
-  const createCartEntry = async (data): Promise<any> =>
-    await strapi.entityService.create('api::cart.cart', {
-      data,
-      populate: populateCart,
-    });
+const createCartEntry = async (data): Promise<any> =>
+  await strapi.entityService.create('api::cart.cart', {
+    data,
+    populate: populateCart,
+  });
 
-  const updateCartEntry = async (id, data): Promise<any> =>
-    await strapi.entityService.update('api::cart.cart', id, {
-      data,
-      populate: populateCart,
-    });
+const updateCartEntry = async (id: number, data): Promise<any> =>
+  await strapi.entityService.update('api::cart.cart', id, {
+    data,
+    populate: populateCart,
+  });
 
-  return {
+export default factories.createCoreService(
+  'api::order.order',
+  ({ strapi }) => ({
     async getCart(uuid: string) {
       const cart = await getCartEntry(uuid);
       if (!cart) {
@@ -248,5 +249,5 @@ export default () => {
         removed: [],
       });
     },
-  };
-};
+  }),
+);

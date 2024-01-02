@@ -574,6 +574,44 @@ export interface PluginContentReleasesReleaseAction
   };
 }
 
+export interface PluginSmsAuthCode extends Schema.CollectionType {
+  collectionName: 'codes';
+  info: {
+    singularName: 'code';
+    pluralName: 'codes';
+    displayName: 'Code';
+    name: 'code';
+  };
+  options: {
+    increments: false;
+    timestamps: true;
+    draftAndPublish: false;
+  };
+  attributes: {
+    phone: Attribute.String & Attribute.Required & Attribute.Private;
+    body: Attribute.String &
+      Attribute.Required &
+      Attribute.Private &
+      Attribute.Unique;
+    loginDate: Attribute.DateTime;
+    isActive: Attribute.Boolean & Attribute.DefaultTo<true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::sms-auth.code',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::sms-auth.code',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginI18NLocale extends Schema.CollectionType {
   collectionName: 'i18n_locale';
   info: {
@@ -1054,9 +1092,9 @@ export interface ApiOrderOrder extends Schema.CollectionType {
     userId: Attribute.Integer;
     address: Attribute.Component<'user.address'>;
     cart: Attribute.Component<'all.cart-item', true>;
-    productsPrice: Attribute.Integer;
+    cartPrice: Attribute.Integer;
     deliveryPrice: Attribute.Integer;
-    discount: Attribute.Integer;
+    deliveryDiscount: Attribute.Integer;
     totalPrice: Attribute.Integer;
     executionStatus: Attribute.Relation<
       'api::order.order',
@@ -1377,6 +1415,7 @@ declare module '@strapi/types' {
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
+      'plugin::sms-auth.code': PluginSmsAuthCode;
       'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;

@@ -13,30 +13,28 @@ type OrderPricesArgs = Parameters<typeof getOrderPrices>[0];
 
 export const orderQueries = {
   baseKey: ['order'],
-  pricesKey: ['order', 'prices'],
-  deliveryData: (args?: OrderPricesArgs) => ({
+  deliveryData: () => ({
     queryKey: ['order', 'deliveryData'],
     queryFn: () => getOrderDeliveryData(),
   }),
   prices: (args?: OrderPricesArgs) => ({
-    queryKey: [...orderQueries.pricesKey, args],
+    queryKey: ['order', 'prices'],
     queryFn: () => args && getOrderPrices(args),
-    enabled: !!args,
   }),
 };
-
-export function useOrderPrices(args?: OrderPricesArgs) {
-  return useQuery(orderQueries.prices(args));
-}
 
 export function useOrderDeliveryData() {
   return useQuery(orderQueries.deliveryData());
 }
 
+export function useOrderPrices() {
+  const query = useOrderDeliveryData();
+  return useQuery(orderQueries.prices(query.data?.coords));
+}
+
 export function useDeliveryAddressString() {
   return useQuery({
-    queryKey: ['order', 'deliveryData'],
-    queryFn: () => getOrderDeliveryData(),
+    ...orderQueries.deliveryData(),
     select: useCallback(
       (data: OrderDeliveryData | null) =>
         data

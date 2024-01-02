@@ -65,7 +65,7 @@ export interface MiscDeliveryData extends Schema.Component {
   attributes: {
     zonePrices: Attribute.Component<'misc.delivery-zones', true>;
     cartAmountForDeliveryDiscount: Attribute.Integer & Attribute.Required;
-    deliveryDiscount: Attribute.Integer & Attribute.Required;
+    deliveryDiscountAmount: Attribute.Integer & Attribute.Required;
     mapCenter: Attribute.String & Attribute.Required;
   };
 }

@@ -21,7 +21,7 @@ export type Settings = {
   themeColor: string | null;
   favicon: ImageType | null;
   logo: ImageType | null;
-} | null;
+};
 
 export type Ref = {
   id: number;
@@ -35,7 +35,7 @@ export type Metrics = {
   yandexId: string | null;
   googleId: string | null;
   jsCode: string | null;
-} | null;
+};
 
 export type DeliveryData = {
   zonePrices: {
@@ -48,13 +48,13 @@ export type DeliveryData = {
   cartAmountForDeliveryDiscount: number;
   deliveryDiscount: number;
   mapCenter: string;
-} | null;
+};
 
 export type Misc = {
   menu: MenuItem[];
   socials: Social[];
   refs: Ref[];
-  settings: Settings;
-  deliveryData: DeliveryData;
-  metrics: Metrics;
+  settings: Settings | null;
+  deliveryData: DeliveryData | null;
+  metrics: Metrics | null;
 };

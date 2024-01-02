@@ -4,16 +4,31 @@ import _ from 'lodash';
 export default factories.createCoreController(
   'api::order.order',
   ({ strapi }) => ({
-    async create({ request, session, state }) {
+    async create(ctx) {
+      const { request, session, state } = ctx;
       const { phone, name, address, comment } = request.body.data;
       const user = state.user;
+
+      if (!phone || !name || !address) {
+        return ctx.badRequest('Some fields are not provided in request');
+      }
+
+      const { street, house, coords } = address;
       const cart = await strapi.db.query('api::cart.cart').findOne({
         where: { uuid: session.uuid },
         populate: ['items.product.image'],
       });
-      const orderPrices = await strapi
-        .service('api::order.order')
-        .getPrices(cart);
+
+      let deliveryAddressCoords: number;
+      if (!coords) {
+        deliveryAddressCoords = await strapi
+          .service('api::order.order')
+          .getCoordsFromAddress(street, house);
+      }
+      const { cartPrice, deliveryPrice, deliveryDiscount, totalPrice } =
+        await strapi
+          .service('api::order.order')
+          .getOrderPrices(deliveryAddressCoords);
 
       // Create order
       const newOrder = await strapi.entityService.create('api::order.order', {
@@ -25,8 +40,11 @@ export default factories.createCoreController(
           name,
           address,
           comment,
+          cartPrice,
+          deliveryPrice,
+          deliveryDiscount,
+          totalPrice,
           cart: cart.items,
-          ...orderPrices,
         },
         populate: '*',
       });

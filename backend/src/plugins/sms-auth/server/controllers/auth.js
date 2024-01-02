@@ -28,8 +28,8 @@ module.exports = {
 
     try {
       const code = await authService.createCode(user.phone);
-      await authService.sendLoginCode(code); // send sms
-      ctx.send({ user, code, sent: true });
+      // await authService.sendLoginCode(code); // send sms
+      ctx.send({ user, code, sent: true }); // Убрать код и пользователя перед production
     } catch (err) {
       return ctx.badRequest(err);
     }
@@ -76,18 +76,12 @@ module.exports = {
     // Sanitize the template's user information
     const sanitizedUserInfo = await sanitize.sanitizers.defaultSanitizeOutput(
       userSchema,
-      user
+      user,
     );
 
     ctx.send({
       jwt: jwtService.issue({ id: user.id }),
       user: sanitizedUserInfo,
     });
-  },
-
-  async test(ctx) {
-    const { authService } = strapi.plugin('sms-auth').services;
-    await authService.user('+73');
-    ctx.send('Test 1');
   },
 };
