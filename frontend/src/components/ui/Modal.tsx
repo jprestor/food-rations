@@ -105,7 +105,7 @@ const Modal = memo(
             >
               <div
                 className={cn(
-                  'bg-base-100 relative m-auto w-full max-w-[502px] px-6 pt-8 pb-6 shadow-xl sm:px-4 md:min-h-full rounded-lg',
+                  'bg-base-200 relative m-auto w-full max-w-[502px] px-6 py-10 shadow-xl sm:px-4 md:min-h-full rounded-lg md:max-w-full',
                   size === 'sm' && 'max-w-[464px]',
                   size === 'lg' && 'max-w-[774px]',
                   innerStyle,
@@ -116,7 +116,7 @@ const Modal = memo(
                   : children}
                 <a
                   className={cn(
-                    'transiton hover:text-Primary/Blue md:top-7.5 absolute -right-12 top-0 hover:rotate-180 md:right-6',
+                    'transiton hover:text-primary md:top-6 absolute -right-12 top-0 hover:rotate-180 md:right-6',
                     crossStyle,
                   )}
                   onClick={closeModal}

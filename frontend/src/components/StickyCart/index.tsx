@@ -40,12 +40,16 @@ export default function StickyCart({ className }: { className?: string }) {
 
           <div className="text-sm mt-auto">
             <div className="mb-2 flex items-center gap-2">
-              <p>Доставка</p>
-              <span>·</span>
-              {orderPrices.data?.deliveryPrice ? (
-                <span>{orderPrices.data?.deliveryPrice} ₽</span>
-              ) : (
+              {(orderPrices.data || orderPrices.isLoading) && (
+                <>
+                  <p>Доставка</p>
+                  <span>·</span>
+                </>
+              )}
+              {orderPrices.isLoading ? (
                 <span className="loading loading-spinner text-primary loading-sm" />
+              ) : (
+                <span>{orderPrices.data?.deliveryPrice} ₽</span>
               )}
             </div>
 

@@ -86,7 +86,7 @@ export default function FormOrder({ className }: { className?: string }) {
         onSubmit={handleSubmit(onSubmit)}
       >
         <section className={cn(!isAuthenticated && 'hidden')}>
-          <h2 className="text-2xl mb-5">Ваши данные</h2>
+          <h2 className="text-xl font-semibold mb-5">Ваши данные</h2>
           <div className="grid gap-3">
             <TextInput
               label="Телефон"

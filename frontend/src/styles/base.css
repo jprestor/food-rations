@@ -1,7 +1,7 @@
 @layer base {
   html,
   body {
-    @apply text-neutral bg-base-200/30;
+    @apply text-neutral bg-base-200;
   }
 
   body {

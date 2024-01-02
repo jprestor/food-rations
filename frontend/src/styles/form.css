@@ -31,7 +31,7 @@
   }
 
   .field-label {
-    @apply text-base-300 absolute left-5 top-4 transition;
+    @apply text-base-content absolute left-5 top-4 transition;
   }
 
   .field-error {

@@ -7,10 +7,13 @@ import * as Yup from 'yup';
 
 import SendCodeModal from '@/components/SendCodeModal';
 import { Button, TextInput } from '@/ui';
+import { useIsAuthenticated } from '@/models/user';
 import { PHONE_REGEXP } from '@/constants';
 import { cn } from '@/lib';
 
 export default function FormLogin({ className }: { className?: string }) {
+  const isAuthenticated = useIsAuthenticated();
+
   const defaultValues = {
     phone: '',
     name: '',
@@ -33,14 +36,21 @@ export default function FormLogin({ className }: { className?: string }) {
   const {
     register,
     watch,
+    handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
 
   const userPhone = watch('phone');
   const userName = watch('name');
 
+  if (isAuthenticated) {
+    return null;
+  }
+
   return (
-    <form className={cn(className)}>
+    <form className={cn(className)} onSubmit={handleSubmit(() => {})}>
+      <h3 className="text-xl font-semibold mb-5">Войти в личный кабинет</h3>
+
       <div className="mb-9 grid gap-5 sm:gap-2 md:mb-6">
         <TextInput
           label="Телефон"
@@ -61,13 +71,14 @@ export default function FormLogin({ className }: { className?: string }) {
       >
         Далее
       </Button>
+
       {!isEmpty(errors) && (
         <div className="text-error pt-5 md:pt-3">
           {values(errors as any)?.[0]?.message}
         </div>
       )}
 
-      {true && (
+      {isSubmitSuccessful && (
         <SendCodeModal
           isModalOpen={isSubmitSuccessful}
           phone={userPhone}

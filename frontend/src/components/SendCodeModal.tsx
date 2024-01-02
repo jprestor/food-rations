@@ -61,7 +61,7 @@ export default function SendCodeModal({
   }, [isModalOpen]);
 
   return (
-    <Modal innerStyle="p-10" size="sm" externalIsOpen={true}>
+    <Modal size="sm" externalIsOpen={isModalOpen}>
       {({ setIsOpen }: any) => (
         <div className="text-center">
           <p className="text-xl font-semibold mb-11">Введите полученный код</p>
@@ -85,7 +85,7 @@ export default function SendCodeModal({
               Отправить код повторно
             </a>
           ) : (
-            <p className="text-sm text-base-300">
+            <p className="text-sm text-base-content">
               Новый код можно получить через {counter} сек.
             </p>
           )}

@@ -23,7 +23,7 @@ export default function OrderCart() {
 
   return (
     <div className="sticky top-12 rounded-lg bg-white p-7">
-      <p className="H4 mb-5 sm:mb-7">Состав заказа</p>
+      <p className="text-xl font-semibold mb-5 sm:mb-7">Состав заказа</p>
 
       {!isEmptyCart ? (
         <>
@@ -34,29 +34,32 @@ export default function OrderCart() {
           </div>
 
           {/* Total */}
-          <div className="pt-4">
-            <div className="grid gap-4 border-b border-b-base-200 pb-4">
-              <div className="flex justify-between">
-                <div>{cart.data?.totalPrice} товара</div>
-                <div>{cart.data?.totalPrice} ₽</div>
-              </div>
-              {deliveryDiscount && (
-                <div className="text-primary flex justify-between">
-                  <div>Скидка</div>
-                  <div>{deliveryDiscount} ₽</div>
+          {orderPrices.data && (
+            <div className="pt-4">
+              <div className="grid gap-4 border-b border-b-base-300 pb-4">
+                <div className="flex justify-between">
+                  <div>{cart.data?.items.length} товара</div>
+                  <div>{cart.data?.totalPrice} ₽</div>
                 </div>
-              )}
-              <div className="flex justify-between">
-                <div className="mr-8">Доставка</div>
-                <div>{deliveryPrice} ₽</div>
+
+                {/* {deliveryDiscount && (
+                    <div className="text-primary flex justify-between">
+                      <div>Скидка</div>
+                      <div>{deliveryDiscount} ₽</div>
+                    </div>
+                  )} */}
+                <div className="flex justify-between">
+                  <div className="mr-8">Доставка</div>
+                  <div>{deliveryPrice} ₽</div>
+                </div>
+              </div>
+
+              <div className="font-semibold flex justify-between pt-5">
+                <div>Сумма заказа</div>
+                <div>{totalPrice} ₽</div>
               </div>
             </div>
-
-            <div className="P_b flex justify-between pt-5">
-              <div>Сумма заказа</div>
-              <div>{totalPrice} ₽</div>
-            </div>
-          </div>
+          )}
         </>
       ) : (
         <EmptyCart />

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-import FormLogin from '@/components/FormLogin';
+import FormLoginByPhone from '@/components/FormLoginByPhone';
 import { Link, Svg, Modal } from '@/ui';
 import { useIsAuthenticated, useLogout } from '@/models/user';
 
@@ -65,7 +65,7 @@ export default function CabinetLink() {
             </a>
           }
         >
-          <FormLogin />
+          <FormLoginByPhone />
         </Modal>
       )}
     </>
