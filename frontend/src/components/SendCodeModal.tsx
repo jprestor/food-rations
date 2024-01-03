@@ -1,6 +1,12 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import {
+  useEffect,
+  useState,
+  useRef,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 import toast from 'react-hot-toast';
 
 import { Modal } from '@/ui';
@@ -11,16 +17,21 @@ export default function SendCodeModal({
   name,
   phone,
   isModalOpen,
+  setIsModalOpen,
 }: {
   name?: string;
   phone: string;
   isModalOpen: boolean;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [value, setValue] = useState('');
   const [counter, setCounter] = useState(0);
   const [error, setError] = useState(false);
   const intervalID = useRef<ReturnType<typeof setInterval>>();
   const login = useLogin();
+
+  // Only for Test!
+  const [smsCode, setSmsCode] = useState('');
 
   const onInputChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -42,7 +53,8 @@ export default function SendCodeModal({
 
   const startTimer = async () => {
     setCounter(60);
-    sendSmsCode({ name, phone });
+    const data = await sendSmsCode({ name, phone });
+    setSmsCode(data.code.body);
 
     intervalID.current = setInterval(() => {
       setCounter((prev) => {
@@ -56,15 +68,26 @@ export default function SendCodeModal({
   };
 
   useEffect(() => {
-    if (isModalOpen) startTimer();
+    if (isModalOpen && !counter) startTimer();
     return () => clearInterval(intervalID.current);
   }, [isModalOpen]);
 
   return (
-    <Modal size="sm" externalIsOpen={isModalOpen}>
+    <Modal
+      size="sm"
+      externalIsOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+    >
       {({ setIsOpen }: any) => (
         <div className="text-center">
           <p className="text-xl font-semibold mb-11">Введите полученный код</p>
+
+          {/* Убрать перед продом */}
+          {smsCode && (
+            <p className="text-lg text-base-content mb-7">
+              Тестовый смс код: {smsCode}
+            </p>
+          )}
 
           <div className={cn('mb-14', error && 'mb-7')}>
             <input

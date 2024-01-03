@@ -7,11 +7,13 @@ import utils from '@strapi/utils';
 import * as turf from '@turf/turf';
 import axios from 'axios';
 
+const { ApplicationError } = utils.errors;
+
 export default factories.createCoreService(
   'api::order.order',
   ({ strapi }) => ({
     // Возвращает тотал цен
-    async getOrderPrices(deliveryAddressCoords: number[]) {
+    async getOrderPrices(deliveryZone: { cost: number }) {
       const ctx = strapi.requestContext.get();
       const { session } = ctx;
       const cart = await strapi.service('api::cart.cart').getCart(session.uuid);
@@ -20,7 +22,7 @@ export default factories.createCoreService(
         .service('api::order.order')
         .getDeliveryPrice({
           cartPrice,
-          deliveryAddressCoords,
+          deliveryZone,
         });
       const totalPrice = cartPrice ? cartPrice + deliveryPrice : null;
 
@@ -30,21 +32,16 @@ export default factories.createCoreService(
     // Возвращает цену доставки заказа
     async getDeliveryPrice({
       cartPrice = 0,
-      deliveryAddressCoords,
+      deliveryZone,
     }: {
       cartPrice: number;
-      deliveryAddressCoords: number[];
+      deliveryZone: { cost: number };
     }) {
-      const [misc, userDeliveryZone] = await Promise.all([
-        strapi.entityService.findMany('api::misc.misc', {
-          populate: ['deliveryData.zonePrices'],
-        }),
-        strapi
-          .service('api::order.order')
-          .getUserDeliveryZone(deliveryAddressCoords),
-      ]);
+      const misc = await strapi.entityService.findMany('api::misc.misc', {
+        populate: ['deliveryData.zonePrices'],
+      });
       const { deliveryData } = misc;
-      const deliveryZonePrice = userDeliveryZone.cost;
+      const deliveryZonePrice = deliveryZone.cost;
       const { cartAmountForDeliveryDiscount, deliveryDiscountAmount } =
         deliveryData;
 
@@ -75,13 +72,13 @@ export default factories.createCoreService(
     // Получает координаты объекта по его адресу и возращает их
     async getCoordsFromAddress(street: string, house: string) {
       const res = await axios.get(
-        `https://geocode-maps.yandex.ru/1.x/apikey=${process.env.YMAPS_API_KEY}&geocode=Москва,+${street}+улица,+дом+${house}&format=json&kind=locality&results=1`,
+        `https://geocode-maps.yandex.ru/1.x/?apikey=${process.env.YMAPS_API_KEY}&geocode=Казань,+${street}+улица,+дом+${house}&format=json&kind=street&results=1`,
       );
       // Test: https://geocode-maps.yandex.ru/1.x/?apikey=YOUR_API_KEY&geocode=Москва,+Тверская+улица,+дом+7&format=json
       const { featureMember } = res.data.response.GeoObjectCollection;
       const [first] = featureMember;
-      const coords = first.GeoObject.Point.pos;
-      return coords;
+      const coordsString = first.GeoObject.Point.pos;
+      return coordsString.split(' ').reverse().map(Number);
     },
   }),
 );

@@ -19,17 +19,17 @@ export default async function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
-  await Promise.all([queryClient.prefetchQuery(userQueries.getUser())]);
+  const qc = new QueryClient();
+  await Promise.all([qc.prefetchQuery(userQueries.getUser())]);
 
-  const user = queryClient.getQueryData<User>(userQueries.getUser().queryKey);
+  const user = qc.getQueryData<User>(userQueries.getUser().queryKey);
 
   if (!user) {
     redirect(NAV.login);
   }
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <HydrationBoundary state={dehydrate(qc)}>
       <div className="container">
         <Nav />
         {children}

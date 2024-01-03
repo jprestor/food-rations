@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import FormLoginByPhone from '@/components/FormLoginByPhone';
 import { Link, Svg, Modal } from '@/ui';
 import { useIsAuthenticated, useLogout } from '@/models/user';
+import { NAV } from '@/constants';
 
 export default function CabinetLink() {
   const isAuthenticated = useIsAuthenticated();
@@ -14,14 +15,13 @@ export default function CabinetLink() {
 
   const onLogout = async () => {
     await logout.mutateAsync();
-    router.push('/');
     toast('Вы вышли из личного кабинета');
   };
 
   return (
     <>
       {isAuthenticated ? (
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end z-10">
           <label
             tabIndex={0}
             className="link text-gray_3 flex h-10 w-10 items-center justify-center rounded-[50%] bg-white"
@@ -33,18 +33,12 @@ export default function CabinetLink() {
             className="dropdown-content mt-2 w-64 overflow-hidden rounded-lg bg-white"
           >
             <li>
-              <Link
-                className="hover:bg-gray_4 block p-4"
-                to="/cabinet?page=edit"
-              >
+              <Link className="hover:bg-gray_4 block p-4" to={NAV.userInfo}>
                 Мои данные
               </Link>
             </li>
             <li>
-              <Link
-                className="hover:bg-gray_4 block p-4"
-                to="/cabinet?page=orders"
-              >
+              <Link className="hover:bg-gray_4 block p-4" to={NAV.userOrders}>
                 Мои заказы
               </Link>
             </li>

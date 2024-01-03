@@ -1,7 +1,6 @@
-import { api, ApiError } from '@/lib';
-import Cookies from 'js-cookie';
+import { api, cookies, ApiError } from '@/lib';
 import type { Address } from '@/models/commonTypes';
-import type { Order, OrderPrices, OrderDeliveryData } from './types';
+import type { Order, OrderPrices, SelectedDeliveryAddress } from './types';
 import { type DeliveryData } from '@/models/misc/types';
 
 const ORDERS_ROUTE = '/orders';
@@ -49,19 +48,28 @@ export async function fetchOrderDetail(id: number) {
   return resData.data;
 }
 
-export async function getOrderDeliveryData() {
-  const cookie = Cookies.get('deliveryData');
-  return cookie ? (JSON.parse(cookie) as OrderDeliveryData) : null;
+export async function getSelectedDeliveryAddress() {
+  const cookie = cookies.get('deliveryData');
+  return cookie ? (JSON.parse(cookie) as SelectedDeliveryAddress) : null;
 }
 
-export async function setOrderDeliveryData(data: OrderDeliveryData) {
-  Cookies.set('deliveryData', JSON.stringify(data));
+export async function setSelectedDeliveryAddress(
+  data: SelectedDeliveryAddress,
+) {
+  cookies.set('deliveryData', JSON.stringify(data));
   return data;
 }
 
-export async function checkIsDeliveryAvailable(coords: number[]) {
+// Сейчас не используется, может и не нужен вовсе (возможность доставки проверяется в эндпоинтах рассчета цены и оформления заказа)
+export async function checkIsDeliveryAvailable({
+  street,
+  house,
+}: {
+  street: string;
+  house: string;
+}) {
   const res = await api(
-    `${CHECK_IS_DELIVERY_AVAILABLE_ROUTE}?coords=${JSON.stringify(coords)}`,
+    `${CHECK_IS_DELIVERY_AVAILABLE_ROUTE}?street=${street}&house=${house}`,
   );
   if (!res.ok) {
     throw new ApiError(

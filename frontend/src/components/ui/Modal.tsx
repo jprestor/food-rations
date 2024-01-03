@@ -19,10 +19,10 @@ const Modal = memo(
     toggleStyle,
     onOpen,
     onClose,
+    externalIsOpen,
     size = 'md',
     innerStyle,
     crossStyle,
-    externalIsOpen,
     children,
     className,
   }: {
@@ -81,7 +81,6 @@ const Modal = memo(
 
     useEffect(() => {
       if (typeof externalIsOpen !== 'undefined') {
-        console.log('externalIsOpen', externalIsOpen);
         externalIsOpen ? openModal() : closeModal();
       }
     }, [externalIsOpen]);

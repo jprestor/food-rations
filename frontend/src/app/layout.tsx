@@ -11,8 +11,10 @@ import Providers from './providers';
 import { mainFont } from './fonts';
 import Toaster from '@/components/Toaster';
 import Metrics from '@/components/Metrics';
-import { fetchMisc, miscQueries } from '@/models/misc';
+import { userQueries } from '@/models/user';
+import { miscQueries, fetchMisc } from '@/models/misc';
 import { cartQueries } from '@/models/cart';
+import { orderQueries, type SelectedDeliveryAddress } from '@/models/order';
 import { productQueries } from '@/models/product';
 import { productCategoryQueries } from '@/models/product-category';
 import { SITE_URL, FALLBACK_SEO } from '@/constants';
@@ -57,19 +59,25 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
+  const qc = new QueryClient();
   await Promise.all([
-    queryClient.prefetchQuery(miscQueries.get()),
-    queryClient.prefetchQuery(cartQueries.get()),
-    queryClient.prefetchQuery(productQueries.list()),
-    queryClient.prefetchQuery(productCategoryQueries.list()),
+    qc.prefetchQuery(userQueries.getUser()),
+    qc.prefetchQuery(orderQueries.deliveryData()),
+    qc.prefetchQuery(cartQueries.get()),
+    qc.prefetchQuery(miscQueries.get()),
+    qc.prefetchQuery(productQueries.list()),
+    qc.prefetchQuery(productCategoryQueries.list()),
   ]);
+  const deliveryAddress = qc.getQueryData<SelectedDeliveryAddress>(
+    orderQueries.deliveryData().queryKey,
+  );
+  await qc.prefetchQuery(orderQueries.prices(deliveryAddress?.coords));
 
   return (
     <html lang="ru" className={mainFont.className}>
       <body>
         <Providers>
-          <HydrationBoundary state={dehydrate(queryClient)}>
+          <HydrationBoundary state={dehydrate(qc)}>
             <Metrics />
             <div className="flex min-h-screen flex-col">
               <Header />

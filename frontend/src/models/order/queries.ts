@@ -4,10 +4,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   createOrder,
   getOrderPrices,
-  getOrderDeliveryData,
-  setOrderDeliveryData,
+  getSelectedDeliveryAddress,
+  setSelectedDeliveryAddress,
 } from './api';
-import type { OrderDeliveryData } from './types';
+import type { SelectedDeliveryAddress } from './types';
 
 type OrderPricesArgs = Parameters<typeof getOrderPrices>[0];
 
@@ -15,7 +15,7 @@ export const orderQueries = {
   baseKey: ['order'],
   deliveryData: () => ({
     queryKey: ['order', 'deliveryData'],
-    queryFn: () => getOrderDeliveryData(),
+    queryFn: () => getSelectedDeliveryAddress(),
   }),
   prices: (args?: OrderPricesArgs) => ({
     queryKey: ['order', 'prices'],
@@ -23,12 +23,12 @@ export const orderQueries = {
   }),
 };
 
-export function useOrderDeliveryData() {
+export function useSelectedDeliveryAddress() {
   return useQuery(orderQueries.deliveryData());
 }
 
 export function useOrderPrices() {
-  const query = useOrderDeliveryData();
+  const query = useSelectedDeliveryAddress();
   return useQuery(orderQueries.prices(query.data?.coords));
 }
 
@@ -36,7 +36,7 @@ export function useDeliveryAddressString() {
   return useQuery({
     ...orderQueries.deliveryData(),
     select: useCallback(
-      (data: OrderDeliveryData | null) =>
+      (data: SelectedDeliveryAddress | null) =>
         data
           ? [data.address.street, data.address.house].filter(Boolean).join(', ')
           : '',
@@ -53,11 +53,11 @@ export function useCreateOrder() {
   });
 }
 
-export function useSetOrderDeliveryData() {
+export function useSelectDeliveryAddress() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['delivery', 'set'],
-    mutationFn: setOrderDeliveryData,
+    mutationFn: setSelectedDeliveryAddress,
     onSuccess: (data) => {
       queryClient.setQueryData(orderQueries.deliveryData().queryKey, data);
       queryClient.invalidateQueries(orderQueries.prices(data.coords));

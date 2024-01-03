@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function CheckoutPage() {
   return (
-    <div className="container pt-10">
+    <div className="container pt-10 pb-24 md:pb-16">
       <h1 className="text-4xl font-semibold mb-10 lg:text-center">{title}</h1>
 
       <div className="flex gap-7 justify-between lg:flex-col lg:items-center">

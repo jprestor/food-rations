@@ -24,9 +24,17 @@ export default ({ strapi }) => ({
     }
 
     const deliveryAddressCoords = JSON.parse(coordsString);
+    const deliveryZone: { cost: number } | undefined = await strapi
+      .service('api::order.order')
+      .getUserDeliveryZone(deliveryAddressCoords);
+
+    if (!deliveryZone) {
+      return ctx.badRequest('Адрес не входит в зону доставки');
+    }
+
     const prices = await strapi
       .service('api::order.order')
-      .getOrderPrices(deliveryAddressCoords);
+      .getOrderPrices(deliveryZone);
 
     return prices;
   },

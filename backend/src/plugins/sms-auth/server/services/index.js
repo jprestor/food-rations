@@ -28,7 +28,7 @@ module.exports = {
         .findOne({ where: { type: 'authenticated' } });
 
       const newUser = {
-        username: phone,
+        username: name || phone,
         phone,
         name,
         role: { id: authenticatedRole.id },
@@ -93,7 +93,7 @@ module.exports = {
       const msg = `Ваш код для входа на сайт: ${code.body}`;
       const apiId = 'dcfe6f36-ee79-77a4-75c2-00948e442f66';
       const response = await axios.get(
-        `https://sms.ru/sms/send?api_id=${apiId}&to=${code.phone},74993221627&msg=${msg}&json=1`
+        `https://sms.ru/sms/send?api_id=${apiId}&to=${code.phone},74993221627&msg=${msg}&json=1`,
       );
 
       return response.data;

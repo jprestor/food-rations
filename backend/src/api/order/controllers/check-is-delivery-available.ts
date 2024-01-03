@@ -5,23 +5,27 @@
 export default {
   async checkIsDeliveryAvailable(ctx) {
     const { request } = ctx;
-    const coordsString = request.query.coords;
+    const { street, house } = request.query;
 
-    if (!coordsString) {
-      return ctx.badRequest(
-        'No delivery address coordinates is provided in request',
-      );
+    if (!street || !house) {
+      return ctx.badRequest('No address is provided in request');
     }
 
-    const deliveryAddressCoords = JSON.parse(coordsString);
-    const deliveryZone: { cost: number } | undefined = await strapi
-      .service('api::order.order')
-      .getUserDeliveryZone(deliveryAddressCoords);
+    try {
+      const deliveryAddressCoords = await strapi
+        .service('api::order.order')
+        .getCoordsFromAddress(street, house);
+      const deliveryZone: { cost: number } | undefined = await strapi
+        .service('api::order.order')
+        .getUserDeliveryZone(deliveryAddressCoords);
 
-    if (!deliveryZone) {
-      return ctx.badRequest('Address is not in delivery zone');
+      if (!deliveryZone) {
+        return ctx.badRequest('Адрес не входит в зону доставки');
+      }
+
+      return deliveryZone;
+    } catch {
+      return ctx.badRequest('Адрес не входит в зону доставки');
     }
-
-    return deliveryZone;
   },
 };

@@ -28,7 +28,7 @@ export type OrderPrices = {
   totalPrice: number | null;
 };
 
-export type OrderDeliveryData = {
+export type SelectedDeliveryAddress = {
   address: { street: string; house: string };
   coords: number[];
 };

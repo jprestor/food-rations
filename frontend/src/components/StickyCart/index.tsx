@@ -46,10 +46,11 @@ export default function StickyCart({ className }: { className?: string }) {
                   <span>·</span>
                 </>
               )}
-              {orderPrices.isLoading ? (
+              {orderPrices.isLoading && (
                 <span className="loading loading-spinner text-primary loading-sm" />
-              ) : (
-                <span>{orderPrices.data?.deliveryPrice} ₽</span>
+              )}
+              {orderPrices.data?.deliveryPrice && !orderPrices.isLoading && (
+                <span>{orderPrices.data.deliveryPrice} ₽</span>
               )}
             </div>
 

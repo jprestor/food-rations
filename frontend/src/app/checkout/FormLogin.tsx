@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { isEmpty, values } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,8 +12,8 @@ import { useIsAuthenticated } from '@/models/user';
 import { PHONE_REGEXP } from '@/constants';
 import { cn } from '@/lib';
 
-export default function FormLogin({ className }: { className?: string }) {
-  const isAuthenticated = useIsAuthenticated();
+function FormLogin({ className }: { className?: string }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const defaultValues = {
     phone: '',
@@ -40,15 +41,15 @@ export default function FormLogin({ className }: { className?: string }) {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
 
+  const onSubmit = () => {
+    setIsModalOpen(true);
+  };
+
   const userPhone = watch('phone');
   const userName = watch('name');
 
-  if (isAuthenticated) {
-    return null;
-  }
-
   return (
-    <form className={cn(className)} onSubmit={handleSubmit(() => {})}>
+    <form className={cn(className)} onSubmit={handleSubmit(onSubmit)}>
       <h3 className="text-xl font-semibold mb-5">Войти в личный кабинет</h3>
 
       <div className="mb-9 grid gap-5 sm:gap-2 md:mb-6">
@@ -80,11 +81,17 @@ export default function FormLogin({ className }: { className?: string }) {
 
       {isSubmitSuccessful && (
         <SendCodeModal
-          isModalOpen={isSubmitSuccessful}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
           phone={userPhone}
           name={userName}
         />
       )}
     </form>
   );
+}
+
+export default function FormWrapper({ className }: { className?: string }) {
+  const isAuthenticated = useIsAuthenticated();
+  return !isAuthenticated ? <FormLogin className={className} /> : null;
 }

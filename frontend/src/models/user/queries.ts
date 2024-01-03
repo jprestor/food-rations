@@ -54,7 +54,7 @@ export function useLogout() {
     mutationKey: [...BASE_KEY, 'logout'],
     mutationFn: logoutUser,
     onSuccess: (data) => {
-      queryClient.setQueryData(userQueries.getUser().queryKey, undefined);
+      queryClient.invalidateQueries(userQueries.getUser());
     },
   });
 }

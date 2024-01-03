@@ -13,27 +13,37 @@ export default factories.createCoreController(
         return ctx.badRequest('Some fields are not provided in request');
       }
 
-      const { street, house, coords } = address;
+      const { street, house } = address;
       const cart = await strapi.db.query('api::cart.cart').findOne({
         where: { uuid: session.uuid },
         populate: ['items.product.image'],
       });
 
-      let deliveryAddressCoords: number;
-      if (!coords) {
-        deliveryAddressCoords = await strapi
-          .service('api::order.order')
-          .getCoordsFromAddress(street, house);
+      if (cart.items.length < 1) {
+        return ctx.badRequest('Корзина пуста');
       }
+
+      const deliveryAddressCoords = await strapi
+        .service('api::order.order')
+        .getCoordsFromAddress(street, house);
+
+      const deliveryZone: { cost: number } | undefined = await strapi
+        .service('api::order.order')
+        .getUserDeliveryZone(deliveryAddressCoords);
+
+      // Check is delivery available
+      if (!deliveryZone) {
+        return ctx.badRequest('Адрес не входит в зону доставки');
+      }
+
       const { cartPrice, deliveryPrice, deliveryDiscount, totalPrice } =
-        await strapi
-          .service('api::order.order')
-          .getOrderPrices(deliveryAddressCoords);
+        await strapi.service('api::order.order').getOrderPrices(deliveryZone);
 
       // Create order
       const newOrder = await strapi.entityService.create('api::order.order', {
         data: {
-          status: 1, // New
+          executionStatus: 1, // New
+          // paymentStatus: 1, // Неоплачен
           user,
           userId: user.id,
           phone,
@@ -48,8 +58,12 @@ export default factories.createCoreController(
         },
         populate: '*',
       });
+
       // Clear cart
-      await strapi.service('api::cart.cart').setEmptyCart();
+      await strapi
+        .service('api::cart.cart')
+        .setEmptyCart({ uuid: session.uuid });
+
       // Send email to user
       if (user.email) {
         await strapi

@@ -5,13 +5,13 @@ import ModalToggle from './ModalToggle';
 import { MapChooseAddress } from '@/components/Maps';
 import { Modal } from '@/ui';
 import {
-  useSetOrderDeliveryData,
+  useSelectDeliveryAddress,
   useDeliveryAddressString,
 } from '@/models/order';
 
 export default function DeliveryAddressModal() {
   const [error, setError] = useState<string | null>(null);
-  const setDeliveryData = useSetOrderDeliveryData();
+  const setDeliveryData = useSelectDeliveryAddress();
   const addressString = useDeliveryAddressString();
 
   const onSelectAddressOnMap = ({

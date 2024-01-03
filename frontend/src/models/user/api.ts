@@ -1,9 +1,7 @@
-import Cookies from 'js-cookie';
-
-import { api, ApiError } from '@/lib';
 import type { User } from './types';
 import type { Order } from '@/models/order';
 import type { Address } from '@/models/commonTypes';
+import { api, cookies, ApiError } from '@/lib';
 
 export const GET_SMS_CODE_ROUTE = '/sms-auth/send-code';
 export const LOGIN_BY_CODE_ROUTE = '/sms-auth/login-by-code';
@@ -27,7 +25,7 @@ export async function sendSmsCode({
   if (!res.ok) {
     throw new ApiError(sendSmsCode.name, await res.json(), res.status);
   }
-  const resData: string = await res.json();
+  const resData: { code: { body: string } } = await res.json();
   return resData;
 }
 
@@ -49,12 +47,12 @@ export async function loginByCode({
     throw new ApiError(loginByCode.name, await res.json(), res.status);
   }
   const resData: { user: User; jwt: string } = await res.json();
-  Cookies.set('authToken', resData.jwt, { expires: 30 });
+  cookies.set('authToken', resData.jwt, { expires: 30 });
   return resData.user;
 }
 
 export async function logoutUser() {
-  Cookies.remove('authToken');
+  cookies.remove('authToken');
 }
 
 export async function checkAuth() {

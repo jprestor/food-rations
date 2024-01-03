@@ -21,14 +21,10 @@ export default async function StaticPage({
     return null;
   }
 
-  const queryClient = new QueryClient();
-  await Promise.all([
-    queryClient.prefetchQuery(pageQueries.detail(params.slug)),
-  ]);
+  const qc = new QueryClient();
+  await Promise.all([qc.prefetchQuery(pageQueries.detail(params.slug))]);
 
-  const data = queryClient.getQueryData<Page>(
-    pageQueries.detail(params.slug).queryKey,
-  );
+  const data = qc.getQueryData<Page>(pageQueries.detail(params.slug).queryKey);
 
   if (!data) {
     notFound();
@@ -38,7 +34,7 @@ export default async function StaticPage({
   const caption = title || name;
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <HydrationBoundary state={dehydrate(qc)}>
       <Breadcrumbs className="mb-10" segments={[{ name: title || name }]} />
 
       <div className="container">
