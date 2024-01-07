@@ -10,4 +10,5 @@ export enum PaymentStatuses {
   CANCELLED,
 }
 
-export const CONFIRM_RETURN_URL = 'https://takietesti.ru';
+export const CONFIRM_RETURN_URL =
+  'https://xn----7sbhkold2df4gc.xn--p1ai/user/orders';

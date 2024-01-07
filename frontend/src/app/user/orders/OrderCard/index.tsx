@@ -83,7 +83,7 @@ export default function OrderCard({
             <Button
               className="mt-auto !w-[179px] sm:!w-full"
               onClick={onRepeatOrder}
-              variant="green"
+              variant="success"
             >
               Повторить заказ
             </Button>

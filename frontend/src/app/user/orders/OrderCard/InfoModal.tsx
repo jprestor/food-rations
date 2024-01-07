@@ -52,7 +52,7 @@ export default function InfoModal({
 
             <Button
               className="!w-[140px] flex-none sm:-order-1 sm:grow"
-              variant="green"
+              variant="success"
               onClick={() => onAddToCart(i.product.id, i.count)}
             >
               В корзину

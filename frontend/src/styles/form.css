@@ -38,25 +38,31 @@
     @apply text-error;
   }
 
-  .field-datepicker {
-    padding: 0 45px 0 20px;
-    width: 100%;
-    height: 54px;
-    font-size: 16px;
-    background: url(/icons/calendar.svg) center right 20px no-repeat;
-    background-color: #fff;
-    border: 1px solid #efefef;
-    border-radius: 10px;
-    outline: none !important;
-    cursor: pointer;
-
-    &::placeholder {
+  .datepicker {
+    .field-datepicker {
+      padding: 0 45px 0 20px;
+      width: 100%;
+      height: 54px;
       font-size: 16px;
-    }
-  }
+      background: url(/icons/calendar.svg) center right 20px no-repeat;
+      background-color: #fff;
+      border: 1px solid #efefef;
+      border-radius: 10px;
+      outline: none !important;
+      cursor: pointer;
 
-  .react-datepicker__triangle {
-    left: -50px !important;
+      &::placeholder {
+        font-size: 16px;
+      }
+    }
+
+    .react-datepicker-wrapper {
+      display: block !important;
+    }
+
+    .react-datepicker__triangle {
+      left: -50px !important;
+    }
   }
 
   .code-input {

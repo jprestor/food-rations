@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import _ from 'lodash';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,10 +9,15 @@ import * as Yup from 'yup';
 
 import SendCodeModal from '@/components/SendCodeModal';
 import { Button, Link, TextInput } from '@/ui';
-import { PHONE_REGEXP } from '@/constants';
+import { PHONE_REGEXP, NAV } from '@/constants';
 
-export default function FormLoginByPhone() {
+export default function FormLoginByPhone({
+  className,
+}: {
+  className?: string;
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   const defaultValues = {
     phone: '',
@@ -33,18 +39,28 @@ export default function FormLoginByPhone() {
   const {
     register,
     watch,
+    handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
+
+  const onFormSubmit = () => {
+    setIsModalOpen(true);
+  };
+
+  const onSendCodeModalSubmit = () => {
+    router.push(NAV.account);
+  };
 
   const userPhone = watch('phone');
 
   return (
-    <form>
+    <form className={className} onSubmit={handleSubmit(onFormSubmit)}>
       <h2 className="mb-5 text-3xl font-semibold">Войти</h2>
       <p className="text-lg mb-5">
         Введите номер телефона, чтобы войти в свой аккаунт
       </p>
       <TextInput
+        className="child:!border-base-300 child:hocus:!border-primary"
         label="Телефон"
         error={errors?.phone?.message}
         {...register('phone')}
@@ -64,17 +80,13 @@ export default function FormLoginByPhone() {
         </div>
       )}
 
-      <p className="text-xs text-base-300 mt-4">
+      <p className="text-xs text-base-content mt-4">
         Продолжая, вы соглашаетесь со сбором и обработкой{' '}
-        <Link
-          className="underline"
-          to="/privacy-policy#personal-data-processing"
-          target="_blank"
-        >
+        <Link className="underline link" to={NAV.publicOffer} target="_blank">
           персональных данных
         </Link>{' '}
         и{' '}
-        <Link className="underline" to="/privacy-policy" target="_blank">
+        <Link className="underline link" to={NAV.privacyPolicy} target="_blank">
           пользовательским соглашением
         </Link>
       </p>
@@ -84,6 +96,7 @@ export default function FormLoginByPhone() {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           phone={userPhone}
+          onLoginCallback={onSendCodeModalSubmit}
         />
       )}
     </form>

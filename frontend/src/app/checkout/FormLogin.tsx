@@ -41,7 +41,7 @@ function FormLogin({ className }: { className?: string }) {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
 
-  const onSubmit = () => {
+  const onFormSubmit = () => {
     setIsModalOpen(true);
   };
 
@@ -49,7 +49,7 @@ function FormLogin({ className }: { className?: string }) {
   const userName = watch('name');
 
   return (
-    <form className={cn(className)} onSubmit={handleSubmit(onSubmit)}>
+    <form className={cn(className)} onSubmit={handleSubmit(onFormSubmit)}>
       <h3 className="text-xl font-semibold mb-5">Войти в личный кабинет</h3>
 
       <div className="mb-9 grid gap-5 sm:gap-2 md:mb-6">

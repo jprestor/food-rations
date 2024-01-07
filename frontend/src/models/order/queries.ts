@@ -13,7 +13,7 @@ type OrderPricesArgs = Parameters<typeof getOrderPrices>[0];
 
 export const orderQueries = {
   baseKey: ['order'],
-  deliveryData: () => ({
+  selectedDeliveryAddress: () => ({
     queryKey: ['order', 'deliveryData'],
     queryFn: () => getSelectedDeliveryAddress(),
   }),
@@ -24,7 +24,7 @@ export const orderQueries = {
 };
 
 export function useSelectedDeliveryAddress() {
-  return useQuery(orderQueries.deliveryData());
+  return useQuery(orderQueries.selectedDeliveryAddress());
 }
 
 export function useOrderPrices() {
@@ -34,7 +34,7 @@ export function useOrderPrices() {
 
 export function useDeliveryAddressString() {
   return useQuery({
-    ...orderQueries.deliveryData(),
+    ...orderQueries.selectedDeliveryAddress(),
     select: useCallback(
       (data: SelectedDeliveryAddress | null) =>
         data
@@ -59,7 +59,10 @@ export function useSelectDeliveryAddress() {
     mutationKey: ['delivery', 'set'],
     mutationFn: setSelectedDeliveryAddress,
     onSuccess: (data) => {
-      queryClient.setQueryData(orderQueries.deliveryData().queryKey, data);
+      queryClient.setQueryData(
+        orderQueries.selectedDeliveryAddress().queryKey,
+        data,
+      );
       queryClient.invalidateQueries(orderQueries.prices(data.coords));
     },
   });

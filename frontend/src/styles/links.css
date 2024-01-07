@@ -14,11 +14,11 @@
     &::before {
       content: '';
       position: absolute;
-      bottom: -7px;
+      bottom: -0.5em;
       left: 0;
       width: 100%;
       height: 2px;
-      background: #4e5ffc;
+      background: #ff7518;
       transition: 0.2s;
     }
   }

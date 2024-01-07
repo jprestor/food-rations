@@ -72,11 +72,9 @@ export async function checkAuth() {
 
 export type IUpdateUser = {
   id: number;
-  data: Partial<
-    Omit<User, 'id' | 'orders' | 'addresses'> & {
-      addresses: Omit<Address, 'id'>[];
-    }
-  >;
+  data: Omit<User, 'id' | 'orders' | 'addresses'> & {
+    addresses: Omit<Address, 'id'>[];
+  };
 };
 
 export async function updateUser({ id, data }: IUpdateUser) {

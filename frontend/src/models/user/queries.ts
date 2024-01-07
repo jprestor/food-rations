@@ -1,4 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { NAV } from '@/constants';
 
 import {
   loginByCode,
@@ -50,11 +52,14 @@ export function useLogin() {
 
 export function useLogout() {
   const queryClient = useQueryClient();
+  const router = useRouter();
+
   return useMutation({
     mutationKey: [...BASE_KEY, 'logout'],
     mutationFn: logoutUser,
     onSuccess: (data) => {
-      queryClient.invalidateQueries(userQueries.getUser());
+      queryClient.setQueryData(userQueries.getUser().queryKey, null);
+      router.push(NAV.login);
     },
   });
 }

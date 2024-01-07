@@ -18,11 +18,13 @@ export default function SendCodeModal({
   phone,
   isModalOpen,
   setIsModalOpen,
+  onLoginCallback,
 }: {
   name?: string;
   phone: string;
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  onLoginCallback?: () => void;
 }) {
   const [value, setValue] = useState('');
   const [counter, setCounter] = useState(0);
@@ -30,20 +32,17 @@ export default function SendCodeModal({
   const intervalID = useRef<ReturnType<typeof setInterval>>();
   const login = useLogin();
 
-  // Only for Test!
+  // Only for Test! Remove before production!!!
   const [smsCode, setSmsCode] = useState('');
 
-  const onInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setIsOpen: any,
-  ) => {
+  const onInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
 
     if (e.target.value.length === 4) {
       try {
         await login.mutateAsync({ code: e.target.value, phone });
         toast.success('Вы авторизованы');
-        setIsOpen(false);
+        onLoginCallback?.();
       } catch (error) {
         console.log('error login:', error);
         setError(true);
@@ -78,42 +77,40 @@ export default function SendCodeModal({
       externalIsOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
     >
-      {({ setIsOpen }: any) => (
-        <div className="text-center">
-          <p className="text-xl font-semibold mb-11">Введите полученный код</p>
+      <div className="text-center">
+        <p className="text-xl font-semibold mb-11">Введите полученный код</p>
 
-          {/* Убрать перед продом */}
-          {smsCode && (
-            <p className="text-lg text-base-content mb-7">
-              Тестовый смс код: {smsCode}
-            </p>
-          )}
+        {/* Remove it before production! */}
+        {smsCode && (
+          <p className="text-lg text-base-content mb-7">
+            Тестовый смс код: {smsCode}
+          </p>
+        )}
 
-          <div className={cn('mb-14', error && 'mb-7')}>
-            <input
-              className={cn('code-input', error && 'is-error')}
-              type="text"
-              value={value}
-              maxLength={4}
-              onChange={(e) => onInputChange(e, setIsOpen)}
-              placeholder="0000"
-            />
-            {error && (
-              <div className="text-sm text-error mt-2">Некорректный код</div>
-            )}
-          </div>
-
-          {counter < 1 ? (
-            <a className="link text-sm hover:opacity-80" onClick={startTimer}>
-              Отправить код повторно
-            </a>
-          ) : (
-            <p className="text-sm text-base-content">
-              Новый код можно получить через {counter} сек.
-            </p>
+        <div className={cn('mb-14', error && 'mb-7')}>
+          <input
+            className={cn('code-input', error && 'is-error')}
+            type="text"
+            value={value}
+            maxLength={4}
+            onChange={(e) => onInputChange(e)}
+            placeholder="0000"
+          />
+          {error && (
+            <div className="text-sm text-error mt-2">Некорректный код</div>
           )}
         </div>
-      )}
+
+        {counter < 1 ? (
+          <a className="link text-sm hover:opacity-80" onClick={startTimer}>
+            Отправить код повторно
+          </a>
+        ) : (
+          <p className="text-sm text-base-content">
+            Новый код можно получить через {counter} сек.
+          </p>
+        )}
+      </div>
     </Modal>
   );
 }

@@ -2,7 +2,7 @@ import { cn } from '@/lib';
 
 import Link from './Link';
 
-type Variant = 'green' | 'white' | 'outline-black' | 'outline-white';
+type Variant = 'primary' | 'secondary' | 'accent' | 'info' | 'success';
 
 interface IProps {
   variant?: Variant | false;

@@ -21,6 +21,7 @@ import { SITE_URL, FALLBACK_SEO } from '@/constants';
 
 import 'photoswipe/dist/photoswipe.css';
 import 'react-modern-drawer/dist/index.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import '@/styles/index.css';
 
 export const dynamic = 'force-dynamic';
@@ -62,16 +63,16 @@ export default async function RootLayout({
   const qc = new QueryClient();
   await Promise.all([
     qc.prefetchQuery(userQueries.getUser()),
-    qc.prefetchQuery(orderQueries.deliveryData()),
+    qc.prefetchQuery(orderQueries.selectedDeliveryAddress()),
     qc.prefetchQuery(cartQueries.get()),
     qc.prefetchQuery(miscQueries.get()),
     qc.prefetchQuery(productQueries.list()),
     qc.prefetchQuery(productCategoryQueries.list()),
   ]);
-  const deliveryAddress = qc.getQueryData<SelectedDeliveryAddress>(
-    orderQueries.deliveryData().queryKey,
+  const selectedAddress = qc.getQueryData<SelectedDeliveryAddress>(
+    orderQueries.selectedDeliveryAddress().queryKey,
   );
-  await qc.prefetchQuery(orderQueries.prices(deliveryAddress?.coords));
+  await qc.prefetchQuery(orderQueries.prices(selectedAddress?.coords));
 
   return (
     <html lang="ru" className={mainFont.className}>

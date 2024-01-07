@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 import FormLoginByPhone from '@/components/FormLoginByPhone';
@@ -11,7 +10,6 @@ import { NAV } from '@/constants';
 export default function CabinetLink() {
   const isAuthenticated = useIsAuthenticated();
   const logout = useLogout();
-  const router = useRouter();
 
   const onLogout = async () => {
     await logout.mutateAsync();

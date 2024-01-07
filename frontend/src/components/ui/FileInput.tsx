@@ -50,11 +50,7 @@ function FileInput({
 
       <div className="flex items-center gap-4">
         <span className="text-Secondary/Grey3 font-semibold">{fileName}</span>
-        <Button
-          className="gap-2"
-          variant="white"
-          onClick={() => labelRef.current?.click()}
-        >
+        <Button className="gap-2" onClick={() => labelRef.current?.click()}>
           <Svg className="mt-0.5" id="plus" width={14} height={14} />
           {fileName ? 'Изменить реквизиты оплаты ' : 'Реквизиты оплаты'}
         </Button>

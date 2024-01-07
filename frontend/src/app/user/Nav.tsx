@@ -10,7 +10,7 @@ export default function AccountNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="text-4xl -mx-5 mb-12 flex sm:mx-4 sm:mb-9 sm:text-center sm:text-2xl">
+    <nav className="text-3xl font-medium mb-16 flex gap-8 sm:gap-4 sm:mb-9 sm:justify-center sm:text-lg">
       {[
         { name: 'Личные данные', link: NAV.userInfo },
         { name: 'История заказов', link: NAV.userOrders },
@@ -19,10 +19,7 @@ export default function AccountNav() {
 
         return (
           <Link
-            className={cn(
-              'mx-5 border-b-2 py-2.5',
-              isActive ? 'border-black' : 'text-base-300 border-transparent',
-            )}
+            className={cn(isActive ? 'link-underline' : 'hover:text-primary')}
             to={link}
             key={link}
           >

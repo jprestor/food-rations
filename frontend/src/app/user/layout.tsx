@@ -30,7 +30,7 @@ export default async function PrivateLayout({
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
-      <div className="container">
+      <div className="container pt-10 pb-24">
         <Nav />
         {children}
       </div>
