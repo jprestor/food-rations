@@ -1,6 +1,8 @@
 import { factories } from '@strapi/strapi';
 import _ from 'lodash';
 
+import { ExecutionStatuses, PaymentStatuses } from '../../../../constants';
+
 export default factories.createCoreController(
   'api::order.order',
   ({ strapi }) => ({
@@ -42,8 +44,8 @@ export default factories.createCoreController(
       // Create order
       const newOrder = await strapi.entityService.create('api::order.order', {
         data: {
-          executionStatus: 1, // New
-          // paymentStatus: 1, // Неоплачен
+          executionStatus: `${ExecutionStatuses.NEW}`,
+          paymentStatus: `${PaymentStatuses.UNPAID}`,
           user,
           userId: user.id,
           phone,
@@ -59,17 +61,22 @@ export default factories.createCoreController(
         populate: '*',
       });
 
+      // Сreate payment
+      // const payment = await strapi
+      //   .service('api::payment.payment')
+      //   .createPayment(newOrder);
+
       // Clear cart
       await strapi
         .service('api::cart.cart')
         .setEmptyCart({ uuid: session.uuid });
 
       // Send email to user
-      if (user.email) {
-        await strapi
-          .service('api::mailing-letter.mailing-letter')
-          .sendMailingLetter(user.email, 'user_order_created');
-      }
+      // if (user.email) {
+      //   await strapi
+      //     .service('api::mailing-letter.mailing-letter')
+      //     .sendMailingLetter(user.email, 'user_order_created');
+      // }
 
       return newOrder;
     },

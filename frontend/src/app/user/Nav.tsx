@@ -10,7 +10,7 @@ export default function AccountNav() {
   const pathname = usePathname();
 
   return (
-    <div className="text-4xl -mx-5 mb-12 flex sm:mx-4 sm:mb-9 sm:text-center sm:text-2xl">
+    <nav className="text-4xl -mx-5 mb-12 flex sm:mx-4 sm:mb-9 sm:text-center sm:text-2xl">
       {[
         { name: 'Личные данные', link: NAV.userInfo },
         { name: 'История заказов', link: NAV.userOrders },
@@ -30,6 +30,6 @@ export default function AccountNav() {
           </Link>
         );
       })}
-    </div>
+    </nav>
   );
 }

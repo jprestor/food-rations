@@ -38,18 +38,14 @@ export default function Button({
   const isLink = href !== undefined;
   const isNextLink = to !== undefined;
 
-  const style = cn(
-    'btn relative',
-    disabled && 'btn-disabled',
-    loading && 'btn-loading',
-    className,
-  );
+  const style = cn('btn relative', disabled && 'btn-disabled', className);
 
   return (
     <>
       {!isLink && !isNextLink && (
         <button className={style} type={type} onClick={onClick} form={form}>
           {children}
+          {loading && <span className="loading loading-spinner" />}
         </button>
       )}
 

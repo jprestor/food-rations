@@ -1,0 +1,232 @@
+<!--
+  - Общие данные
+  <%= siteDomain %>
+  <%= phone %>
+  <%= order %>
+
+  - Данные шаблона с админки
+  <%= title %>
+  <%= text %>
+  <%= notice %>
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=320, initial-scale=1" />
+    <title>Заказ оплачен</title>
+    <style type="text/css">
+      /* ----- Client Fixes ----- */
+
+      /* Force Outlook to provide a "view in browser" message */
+      #outlook a {
+        padding: 0;
+      }
+
+      /* Force Hotmail to display emails at full width */
+      .ReadMsgBody {
+        width: 100%;
+      }
+
+      .ExternalClass {
+        width: 100%;
+      }
+
+      /* Force Hotmail to display normal line spacing */
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+
+      /* Prevent WebKit and Windows mobile changing default text sizes */
+      body,
+      table,
+      td,
+      p,
+      a,
+      li,
+      blockquote {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+
+      /* Remove spacing between tables in Outlook 2007 and up */
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+
+      /* Allow smoother rendering of resized image in Internet Explorer */
+      img {
+        -ms-interpolation-mode: bicubic;
+      }
+
+      /* ----- Reset ----- */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f4f4f8;
+        font-family: Roboto, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        line-height: 130%;
+        color: #202027;
+      }
+
+      img {
+        border: 0;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+      }
+
+      table {
+        border-collapse: collapse !important;
+      }
+    </style>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background: #f4f4f8;
+      font-family: Roboto, Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 130%;
+      color: #202027;
+    "
+  >
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td style="padding: 57px 0 45px">
+          <center>
+            <table
+              style="max-width: 890px"
+              cellpadding="0"
+              cellspacing="0"
+              width="100%"
+            >
+              <tr>
+                <td style="padding-bottom: 49px">
+                  <img
+                    src="https://<%= siteDomain %>/strapi/uploads/logo_f8b8f224e8.png"
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding-bottom: 17px">
+                  <h1 style="margin: 0; font-size: 40px; line-height: 125%">
+                    <%= title %>
+                  </h1>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding-bottom: 30px">
+                  <p style="margin: 0">
+                    Ваш заказ № <%= order.id %> на сайте <%= siteDomain %>
+                    успешно оплачен
+                  </p>
+
+                  <% if (text) { %>
+                  <p style="margin-bottom: 0"><%= text %></p>
+                  <% } %>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding-bottom: 50px; font-size: 24px">
+                  <b><%= order.totalPrice %> ₽</b>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding-bottom: 30px"><%= notice %></td>
+              </tr>
+              <tr>
+                <td style="padding-bottom: 60px">
+                  <a
+                    style="
+                      display: inline-block;
+                      padding: 12px 16px;
+                      color: #fff;
+                      font-weight: 700;
+                      border-radius: 40px;
+                      background: #e31e24;
+                      text-decoration: none;
+                    "
+                    href="https://<%= siteDomain %>/cabinet/?page=orders"
+                    >Открыть мои заказы</a
+                  >
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <table
+                    style="margin-bottom: 15px"
+                    cellspacing="0"
+                    cellpadding="0"
+                    width="100%"
+                  >
+                    <tr>
+                      <td
+                        style="
+                          border-top: 2px solid #e7e7ee;
+                          padding-top: 17px;
+                          vertical-align: center;
+                        "
+                      >
+                        <b>
+                          <a
+                            style="
+                              font-size: 20px;
+                              line-height: 140%;
+                              text-decoration: none;
+                              color: inherit;
+                            "
+                            href="https://<%= siteDomain %>"
+                            ><%= siteDomain %></a
+                          >
+                        </b>
+                      </td>
+
+                      <td
+                        style="
+                          border-top: 2px solid #e7e7ee;
+                          padding-top: 17px;
+                          vertical-align: center;
+                          text-align: right;
+                        "
+                      >
+                        <b>
+                          <a
+                            style="
+                              font-size: 24px;
+                              line-height: 120%;
+                              text-decoration: none;
+                              color: inherit;
+                            "
+                            href="tel:<%= phone %>"
+                            ><%= phone %></a
+                          >
+                        </b>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </center>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -28,7 +28,7 @@
     "@strapi/provider-email-nodemailer": "4.16.2",
     "@strapi/strapi": "4.16.2",
     "@turf/turf": "6.5.0",
-    "axios": "1.6.3",
+    "axios": "^1.6.5",
     "crypto-js": "4.2.0",
     "dayjs": "1.11.10",
     "lodash": "4.17.21",

@@ -18,7 +18,7 @@ import {
   useCreateOrder,
   type ICreateOrderData,
 } from '@/models/order';
-import { PHONE_REGEXP, NAV } from '@/constants';
+import { PHONE_REGEXP } from '@/constants';
 import { cn } from '@/lib';
 
 export default function FormOrder({ className }: { className?: string }) {
@@ -71,8 +71,9 @@ export default function FormOrder({ className }: { className?: string }) {
 
   const onSubmit = async (formValues: ICreateOrderData) => {
     try {
-      const order = await createOrder.mutateAsync(formValues);
-      // router.push(NAV.checkoutConfirm(order.id));
+      const res = await createOrder.mutateAsync(formValues);
+      console.log('res', res);
+      router.push(res.data.confirmation.confirmation_url);
       toast.success('Ваш заказ создан');
     } catch (error: any) {
       console.log('onSubmit error', error);
@@ -120,7 +121,7 @@ export default function FormOrder({ className }: { className?: string }) {
           />
         </div>
         <Button
-          className="max-w-xs mt-10 btn-primary"
+          className="max-w-xs w-full mt-10 btn-primary"
           loading={isSubmitting}
           disabled={isEmptyCart || isSubmitting}
           type="submit"

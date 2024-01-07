@@ -1,7 +1,13 @@
+export enum ExecutionStatuses {
+  NEW = 1,
+  COMPLETED,
+  CANCELLED,
+}
+
 export enum PaymentStatuses {
-  Unpaid = 1,
-  Paid,
-  Cancelled,
+  UNPAID = 1,
+  PAID,
+  CANCELLED,
 }
 
 export const CONFIRM_RETURN_URL = 'https://takietesti.ru';

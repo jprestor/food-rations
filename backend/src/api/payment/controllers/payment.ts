@@ -1,6 +1,4 @@
-import { YooCheckout, ICreatePayment } from '@a2seven/yoo-checkout';
-import { v4 as uuid } from 'uuid';
-import { PaymentStatuses, CONFIRM_RETURN_URL } from '../../../../constants';
+import { PaymentStatuses } from '../../../../constants';
 
 export default {
   create: async ({ request, ...ctx }) => {
@@ -9,38 +7,11 @@ export default {
       'api::order.order',
       orderId,
     );
-    const { totalPrice } = order;
 
     try {
-      const checkout = new YooCheckout({
-        shopId: process.env.YOOKASSA_SHOP_ID,
-        secretKey: process.env.YOOKASSA_SECRET_KEY,
-      });
-
-      const idempotenceKey = uuid();
-
-      const createPayload: ICreatePayment = {
-        amount: {
-          value: String(totalPrice),
-          currency: 'RUB',
-        },
-        payment_method_data: {
-          type: 'bank_card',
-        },
-        confirmation: {
-          type: 'redirect',
-          return_url: CONFIRM_RETURN_URL,
-        },
-        description: `Заказ №${orderId}`,
-        metadata: {
-          orderId,
-        },
-      };
-
-      const payment = await checkout.createPayment(
-        createPayload,
-        idempotenceKey,
-      );
+      const payment = await strapi
+        .service('api::payment.payment')
+        .createPayment(order);
 
       return payment;
     } catch (err) {
@@ -62,7 +33,7 @@ export default {
       const order = await strapi.entityService.update(
         'api::order.order',
         orderId,
-        { data: { paymentStatus: PaymentStatuses.Paid } },
+        { data: { paymentStatus: PaymentStatuses.PAID } },
       );
 
       // Send email to user
@@ -70,11 +41,11 @@ export default {
         .query('plugin::users-permissions.user')
         .findOne({ where: { id: order.userId } });
 
-      if (user.email) {
-        await strapi
-          .service('api::mailing-letter.mailing-letter')
-          .sendMailingLetter(user.email, 'user_payment_success');
-      }
+      // if (user.email) {
+      //   await strapi
+      //     .service('api::mailing-letter.mailing-letter')
+      //     .sendMailingLetter(user.email, 'user_payment_success');
+      // }
 
       return order;
     } catch (err) {

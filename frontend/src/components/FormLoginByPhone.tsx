@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import _ from 'lodash';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,6 +11,8 @@ import { Button, Link, TextInput } from '@/ui';
 import { PHONE_REGEXP } from '@/constants';
 
 export default function FormLoginByPhone() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const defaultValues = {
     phone: '',
   };
@@ -76,7 +79,13 @@ export default function FormLoginByPhone() {
         </Link>
       </p>
 
-      <SendCodeModal isModalOpen={isSubmitSuccessful} phone={userPhone} />
+      {isSubmitSuccessful && (
+        <SendCodeModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          phone={userPhone}
+        />
+      )}
     </form>
   );
 }

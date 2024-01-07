@@ -17,7 +17,7 @@ export default function UserPage() {
   return (
     <>
       {user.orders.length > 0 ? (
-        <div className="grid gap-[20px]">
+        <div className="grid gap-5">
           {user.orders.map((order) => (
             <OrderCard data={order} key={order.id} />
           ))}

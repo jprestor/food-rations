@@ -35,7 +35,7 @@ export default function InfoModal({
           </div>
 
           <div className="mr-2.5 grow sm:mb-5 sm:mr-0">
-            <p className="mb-[4px]">{i.product.name}</p>
+            <p className="mb-1">{i.product.name}</p>
             <p className="text-gray_3">
               {i.product.weight && `${i.product.weight} г`}
             </p>
