@@ -62,9 +62,9 @@ export default factories.createCoreController(
       });
 
       // Сreate payment
-      // const payment = await strapi
-      //   .service('api::payment.payment')
-      //   .createPayment(newOrder);
+      const payment = await strapi
+        .service('api::payment.payment')
+        .createPayment(newOrder);
 
       // Clear cart
       await strapi
@@ -78,7 +78,7 @@ export default factories.createCoreController(
       //     .sendMailingLetter(user.email, 'user_order_created');
       // }
 
-      return newOrder;
+      return payment;
     },
   }),
 );
