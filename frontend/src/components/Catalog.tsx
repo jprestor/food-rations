@@ -16,7 +16,7 @@ export default function Catalog() {
   }
 
   return (
-    <section className="container flex gap-5 mb-16">
+    <section className="container flex gap-5 mb-16" id="catalog">
       <div className="w-full">
         <ScrollSpy updateHistoryStack={false}>
           {productCategoryList.data.map((category) => {

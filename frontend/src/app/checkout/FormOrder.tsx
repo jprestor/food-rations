@@ -73,7 +73,7 @@ export default function FormOrder({ className }: { className?: string }) {
     try {
       const res = await createOrder.mutateAsync(formValues);
       console.log('res', res);
-      router.push(res.data.confirmation.confirmation_url);
+      router.push(res.confirmation.confirmation_url);
       toast.success('Ваш заказ создан');
     } catch (error: any) {
       console.log('onSubmit error', error);

@@ -2,28 +2,35 @@ import { type Metadata } from 'next';
 import { QueryClient } from '@tanstack/react-query';
 
 import OrderCard from './OrderCard';
-import { userQueries, type User } from '@/models/user';
+import { Alert } from '@/ui';
+import { userQueries, type User, type UserOrder } from '@/models/user';
 
-const title = 'Личные данные';
+const title = 'История заказов | Кабинет';
 
 export const metadata: Metadata = {
   title,
 };
 
-export default function UserPage() {
-  const queryClient = new QueryClient();
-  const user = queryClient.getQueryData<User>(userQueries.getUser().queryKey)!;
+export default async function UserOrdersPage() {
+  const qc = new QueryClient();
+  await qc.prefetchQuery(userQueries.getUser());
+  const user = qc.getQueryData<User>(userQueries.getUser().queryKey)!;
+  await qc.prefetchQuery(userQueries.orderList(user.id));
+
+  const userOrders = qc.getQueryData<UserOrder[]>(
+    userQueries.orderList(user.id).queryKey,
+  );
 
   return (
     <>
-      {user.orders.length > 0 ? (
+      {userOrders && userOrders.length > 0 ? (
         <div className="grid gap-5">
-          {user.orders.map((order) => (
+          {userOrders.map((order) => (
             <OrderCard data={order} key={order.id} />
           ))}
         </div>
       ) : (
-        <p>Последние 90 дней заказов не было</p>
+        <Alert>Пока нет заказов</Alert>
       )}
     </>
   );

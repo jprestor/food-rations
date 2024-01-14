@@ -23,43 +23,48 @@ export default function InfoModal({
 
   return (
     <Modal toggle={toggle} innerStyle="px-8 !max-w-[719px] bg-white sm:px-5">
-      <h4 className="mb-5">Заказ № {id}</h4>
+      <h4 className="mb-7 text-3xl font-medium">Заказ № {id}</h4>
 
-      {cart.map((i) => (
-        <div
-          className="flex items-center py-2.5 sm:flex-col sm:items-stretch sm:border-t sm:border-t-[#E3E3E9] sm:py-5"
-          key={i.product.id}
-        >
-          <div className="bg-gray mr-4 flex h-20 aspect-square flex-none items-center justify-center overflow-hidden rounded-lg sm:mr-5">
-            <Image data={i.product.image} format="thumbnail" />
-          </div>
-
-          <div className="mr-2.5 grow sm:mb-5 sm:mr-0">
-            <p className="mb-1">{i.product.name}</p>
-            <p className="text-gray_3">
-              {i.product.weight && `${i.product.weight} г`}
-            </p>
-          </div>
-
-          <div className="flex items-center">
-            <div className="ml-auto mr-5 w-12 flex-none text-right">
-              x{i.count}
+      <div className="flex flex-col gap-3 sm:divide-y sm:divide-base-300 sm:gap-0">
+        {cart.map((i) => (
+          <div
+            className="flex items-center sm:flex-col sm:py-5 sm:items-start"
+            key={i.product.id}
+          >
+            <div className="bg-base-200 mr-4 flex h-20 aspect-square flex-none items-center justify-center overflow-hidden rounded-lg sm:mb-3">
+              <Image
+                className="mix-blend-darken"
+                data={i.product.image}
+                format="thumbnail"
+              />
             </div>
 
-            <div className="mr-5 w-[69px] flex-none text-right sm:mr-0 sm:text-lg">
-              {i.cartItemPrice} ₽
+            <div className="mr-2.5 grow sm:mb-5 sm:mr-0">
+              <p className="mb-1">{i.product.name}</p>
+              <p className="text-base-content text-sm">
+                {i.product.weight && `${i.product.weight} г`}
+              </p>
             </div>
 
-            <Button
-              className="!w-[140px] flex-none sm:-order-1 sm:grow"
-              variant="success"
-              onClick={() => onAddToCart(i.product.id, i.count)}
-            >
-              В корзину
-            </Button>
+            <div className="flex items-center">
+              <div className="ml-auto mr-5 w-12 flex-none text-right">
+                x{i.count}
+              </div>
+
+              <div className="mr-5 w-16 flex-none text-right sm:mr-0 sm:text-lg">
+                {i.cartItemPrice} ₽
+              </div>
+
+              <Button
+                className="btn-primary flex-none sm:-order-1 sm:grow"
+                onClick={() => onAddToCart(i.product.id, i.count)}
+              >
+                В корзину
+              </Button>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </Modal>
   );
 }

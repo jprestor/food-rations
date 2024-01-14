@@ -7,7 +7,7 @@
     background: #f8f8f8; /* цвет дорожки */
   }
   body::-webkit-scrollbar-thumb {
-    background-color: #88efd7; /* цвет плашки */
+    background-color: #ff7518; /* цвет плашки */
     /* border-radius: 5px; /* закругления плашки */
     /* border: 3px solid orange; /* padding вокруг плашки */
   }
@@ -22,7 +22,7 @@
       border-radius: 14px;
     }
     &::-webkit-scrollbar-thumb {
-      box-shadow: inset 0 0 0 3px #88efd7;
+      box-shadow: inset 0 0 0 3px #ff7518;
       border: solid 7px transparent;
       border-radius: 14px;
     }

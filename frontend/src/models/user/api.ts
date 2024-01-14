@@ -72,7 +72,7 @@ export async function checkAuth() {
 
 export type IUpdateUser = {
   id: number;
-  data: Omit<User, 'id' | 'orders' | 'addresses'> & {
+  data: Partial<Omit<User, 'id' | 'orders' | 'addresses'>> & {
     addresses: Omit<Address, 'id'>[];
   };
 };
@@ -90,7 +90,7 @@ export async function updateUser({ id, data }: IUpdateUser) {
 
 export async function fetchUserOrderList(id: number) {
   const params = {
-    populate: ['address', 'cart.product.category'],
+    populate: ['address', 'cart.product.category', 'cart.product.image'],
     filters: { userId: id },
     sort: 'createdAt:desc',
   };

@@ -1,3 +1,5 @@
+'use client';
+
 import dayjs from 'dayjs';
 import localeRu from 'dayjs/locale/ru';
 import toast from 'react-hot-toast';
@@ -44,9 +46,9 @@ export default function OrderCard({
           )}
         >
           <div className="">
-            <div className="text-sm text-base-200 mb-2">№ {id}</div>
+            <div className="text-sm text-base-content mb-2">№ {id}</div>
             <div className="text-xl mb-3">{dateCreated} г.</div>
-            <div className="text-sm text-base-200 mb-2">Доставка</div>
+            <div className="text-sm text-base-content mb-2">Доставка</div>
             <div className="mb-5">
               <p>
                 {street && `${street} `}
@@ -61,7 +63,7 @@ export default function OrderCard({
           <div className="grid grid-cols-5 items-center gap-2 sm:grid-cols-2">
             {cart.slice(0, 4).map((i) => (
               <div
-                className="outline-gray_4 flex h-[113px] items-center justify-center overflow-hidden rounded-[10px] outline sm:h-[130px]"
+                className="outline-gray_4 flex h-[113px] items-center justify-center overflow-hidden rounded-md outline sm:h-32"
                 key={i.product.id}
               >
                 <Image data={i.product.image} format="thumbnail" />
@@ -69,7 +71,7 @@ export default function OrderCard({
             ))}
 
             {cart.length > 4 && (
-              <div className="relative flex h-[113px] items-center justify-center overflow-hidden rounded-lg sm:h-[130px]">
+              <div className="relative flex h-[113px] items-center justify-center overflow-hidden rounded-lg sm:h-32">
                 <Image data={cart[4].product.image} format="thumbnail" />
                 <div className="H3 absolute inset-0 flex items-center justify-center bg-[rgba(32,32,39,.5)] text-white">
                   +{cart.slice(0, 4).length}
@@ -81,9 +83,8 @@ export default function OrderCard({
           <div className="flex flex-col items-end">
             <div className="text-xl mb-5">{totalPrice} ₽</div>
             <Button
-              className="mt-auto !w-[179px] sm:!w-full"
+              className="btn-primary mt-auto !w-44 sm:!w-full"
               onClick={onRepeatOrder}
-              variant="success"
             >
               Повторить заказ
             </Button>

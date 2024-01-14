@@ -35,49 +35,49 @@ export const useProductInCart = (productId: number) => {
 };
 
 export function useAddToCart() {
-  const queryClient = useQueryClient();
+  const qc = useQueryClient();
   return useMutation({
     mutationKey: [...cartQueries.baseKey, 'addItem'],
     mutationFn: addToCart,
     onSuccess: (data, variables, context) => {
-      queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries(orderQueries.prices());
+      qc.setQueryData(cartQueries.get().queryKey, data);
+      qc.invalidateQueries(orderQueries.prices());
     },
   });
 }
 
 export function useAddToCartMultiple() {
-  const queryClient = useQueryClient();
+  const qc = useQueryClient();
   return useMutation({
     mutationKey: [...cartQueries.baseKey, 'addMultiple'],
     mutationFn: addToCartMultiple,
     onSuccess: (data, variables, context) => {
-      queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries(orderQueries.prices());
+      qc.setQueryData(cartQueries.get().queryKey, data);
+      qc.invalidateQueries(orderQueries.prices());
     },
   });
 }
 
 export function useRemoveFromCart() {
-  const queryClient = useQueryClient();
+  const qc = useQueryClient();
   return useMutation({
     mutationKey: [...cartQueries.baseKey, 'removeItem'],
     mutationFn: removeFromCart,
     onSuccess: (data, variables, context) => {
-      queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries(orderQueries.prices());
+      qc.setQueryData(cartQueries.get().queryKey, data);
+      qc.invalidateQueries(orderQueries.prices());
     },
   });
 }
 
 export function useRestoreFromDeleted() {
-  const queryClient = useQueryClient();
+  const qc = useQueryClient();
   return useMutation({
     mutationKey: [...cartQueries.baseKey, 'restoreItem'],
     mutationFn: restoreFromDeleted,
     onSuccess: (data, variables, context) => {
-      queryClient.setQueryData(cartQueries.get().queryKey, data);
-      queryClient.invalidateQueries(orderQueries.prices());
+      qc.setQueryData(cartQueries.get().queryKey, data);
+      qc.invalidateQueries(orderQueries.prices());
     },
   });
 }

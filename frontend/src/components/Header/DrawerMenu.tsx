@@ -14,7 +14,6 @@ export default function DrawerMenu({
   const { menu, socials, settings } = misc.data!;
   const { logo } = settings || {};
   const [phone] = useMiscRef('phone');
-  const [email] = useMiscRef('email');
 
   return (
     <Drawer
@@ -24,27 +23,23 @@ export default function DrawerMenu({
       closeOnRouteChange
       customIdSuffix="DrawerMenu"
     >
-      <div className="Desktop/H7 flex flex-col">
+      <div className="flex flex-col">
         <Link className="mb-14 sm:mb-10 sm:w-36" to="/">
           <Image className="w-20" data={logo} format="thumbnail" />
         </Link>
 
-        <ul className="mb-14 grid gap-10">
+        <ul className="mb-14 font-medium text-xl grid gap-7">
           {menu.map((i) => (
-            <li key={i.id}>
+            <li className="link" key={i.id}>
               <Link to={i.url}>{i.name}</Link>
             </li>
           ))}
         </ul>
 
         <a
-          className="text-Primary/Blue link-underline mb-7"
-          href={`mailto:${email}`}
+          className="text-lg font-semibold link mb-7 mt-auto"
+          href={`tel:${phone}`}
         >
-          {email}
-        </a>
-
-        <a className="H4 link mb-7 mt-auto" href={`tel:${phone}`}>
           {phone}
         </a>
 

@@ -37,7 +37,9 @@
       "type": "media",
       "multiple": false,
       "required": true,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "weight": {
       "type": "integer"
@@ -56,19 +58,16 @@
       "type": "integer",
       "default": 10
     },
-    "date": {
-      "type": "date"
-    },
     "weekday": {
       "type": "enumeration",
       "enum": [
-        "Понедельник:1",
-        "Вторник:2",
-        "Среда:3",
-        "Четверг:4",
-        "Пятница:5",
-        "Суббота:6",
-        "Воскресенье:7"
+        "a) Понедельник",
+        "b) Вторник",
+        "c) Среда",
+        "d) Четверг",
+        "e) Пятница",
+        "f) Суббота",
+        "g) Воскресенье"
       ]
     }
   }

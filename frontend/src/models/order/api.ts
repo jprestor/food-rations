@@ -22,7 +22,7 @@ export async function createOrder(data: ICreateOrderData) {
   if (!res.ok) {
     throw new ApiError(createOrder.name, await res.json(), res.status);
   }
-  const resData: { data: { confirmation: { confirmation_url: string } } } =
+  const resData: { confirmation: { confirmation_url: string } } =
     await res.json();
   return resData;
 }

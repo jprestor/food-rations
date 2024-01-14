@@ -51,10 +51,17 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const viewport: Viewport = {
-  themeColor: '#3A58F8',
-};
+export async function generateViewport(): Promise<Viewport | undefined> {
+  try {
+    const misc = await fetchMisc();
 
+    return {
+      themeColor: misc.settings?.themeColor,
+    };
+  } catch {
+    console.log('Fail to fetchMisc in root generateViewport');
+  }
+}
 export default async function RootLayout({
   children,
 }: {

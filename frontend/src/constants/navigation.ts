@@ -1,12 +1,14 @@
 export const NAV = {
   home: '/',
+  catalog: '/#catalog',
+  userOrders: '/user/orders/',
+  contacts: '/contacts/',
+  deliveryAndPayment: '/delivery-and-payment/',
+  privacyPolicy: '/privacy-policy/',
+  publicOffer: '/public-offer/',
   checkout: '/checkout/',
   checkoutConfirm: (id: number) => `/checkout/confirm/${id}/`,
   login: '/login/',
   account: '/user/info/',
   userInfo: '/user/info/',
-  userOrders: '/user/orders/',
-  contacts: '/contacts/',
-  privacyPolicy: '/privacy-policy/',
-  publicOffer: '/privacy-policy#personal-data-processing/',
 };

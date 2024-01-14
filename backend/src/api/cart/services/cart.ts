@@ -48,206 +48,203 @@ const calcItemPrice = (productPrice: number, count: number) =>
 const calcTotalPrice = (items: CartItem[]) =>
   items.reduce((acc: number, { cartItemPrice }) => acc + cartItemPrice, 0);
 
-const getProductEntry = async (id: number): Promise<any> =>
-  await strapi.entityService.findOne('api::product.product', id, {
+const getProductEntry = (id: number): Promise<any> =>
+  strapi.entityService.findOne('api::product.product', id, {
     populate: ['product.image', 'categories'],
   });
 
-const getCartEntry = async (uuid: string): Promise<Cart | null> =>
-  await strapi.db.query('api::cart.cart').findOne({
+const getCartEntry = (uuid: string): Promise<Cart | null> =>
+  strapi.db.query('api::cart.cart').findOne({
     where: { uuid },
     populate: populateCart,
   });
 
-const createCartEntry = async (data): Promise<any> =>
-  await strapi.entityService.create('api::cart.cart', {
+const createCartEntry = (data): Promise<any> =>
+  strapi.entityService.create('api::cart.cart', {
     data,
     populate: populateCart,
   });
 
-const updateCartEntry = async (id: number, data): Promise<any> =>
-  await strapi.entityService.update('api::cart.cart', id, {
+const updateCartEntry = (id: number, data): Promise<any> =>
+  strapi.entityService.update('api::cart.cart', id, {
     data,
     populate: populateCart,
   });
 
-export default factories.createCoreService(
-  'api::order.order',
-  ({ strapi }) => ({
-    async getCart(uuid: string) {
-      const cart = await getCartEntry(uuid);
-      if (!cart) {
-        return null;
-      }
-      return this.updateCart(cart);
-    },
+export default factories.createCoreService('api::cart.cart', ({ strapi }) => ({
+  async getCart(uuid: string) {
+    const cart = await getCartEntry(uuid);
+    if (!cart) {
+      return null;
+    }
+    return this.updateCart(cart);
+  },
 
-    async updateCart(cart: Cart): Promise<Cart> {
-      return updateCartEntry(cart.id, {
-        ...cart,
-        totalPrice: calcTotalPrice(cart.items),
-      });
-    },
+  async updateCart(cart: Cart): Promise<Cart> {
+    return updateCartEntry(cart.id, {
+      ...cart,
+      totalPrice: calcTotalPrice(cart.items),
+    });
+  },
 
-    async createCart({ uuid, items }: { uuid: string; items: CartItem[] }) {
-      const cart = await createCartEntry({
-        uuid,
-        items,
-        removed: [],
-      });
-
-      return this.updateCart(cart);
-    },
-
-    // - Если нет корзины - создаёт корзнину
-    // - Если не передан count - удаляет из корзины
-    // - Если товар в корзине - обновляет count
-    // - Если товара нет корзине - добавляет товар
-    async addToCart({
-      uuid,
-      productId,
-      count,
-    }: {
-      uuid: string;
-      productId: number;
-      count?: number;
-    }) {
-      const [cart, product] = await Promise.all([
-        getCartEntry(uuid),
-        getProductEntry(productId),
-      ]);
-      const cartItemPrice = calcItemPrice(product.price, count);
-      const newItem = { product, count, cartItemPrice };
-
-      if (!cart) {
-        return this.createCart({ uuid, items: [newItem] });
-      }
-
-      // Удаляем если кол-во товара 0
-      if (count < 1) {
-        return this.removeFromCart({ uuid, productId });
-      }
-
-      const { items, removed } = cart;
-      const itemInCart = items.find((i) => i.product.id === productId);
-      const newRemoved = removed.filter((i) => i.product.id === productId);
-
-      if (itemInCart) {
-        const itemInCartIndex = _.findIndex(items, {
-          product: { id: productId },
-        });
-
-        return this.updateCart({
-          ...cart,
-          items: [
-            ...items.slice(0, itemInCartIndex),
-            newItem,
-            ...items.slice(itemInCartIndex + 1),
-          ],
-          removed: newRemoved,
-        });
-      }
-
-      return this.updateCart({
-        ...cart,
-        items: [newItem, ...items],
-        removed: newRemoved,
-      });
-    },
-
-    async addToCartMultiple({
+  async createCart({ uuid, items }: { uuid: string; items: CartItem[] }) {
+    const cart = await createCartEntry({
       uuid,
       items,
-    }: {
-      uuid: string;
-      items: CartItem[];
-    }) {
-      const cart = await getCartEntry(uuid);
+      removed: [],
+    });
 
-      const newItems = await items.reduce(
-        async (acc: Promise<CartItem[]>, item: CartItem) => {
-          const product = await getProductEntry(item.product.id);
-          const cartItemPrice = calcItemPrice(product.price, item.count);
-          const newItem = {
-            product,
-            count: item.count,
-            cartItemPrice,
-          };
-          return [...(await acc), newItem];
-        },
-        Promise.resolve([]),
-      );
+    return this.updateCart(cart);
+  },
 
-      if (!cart) {
-        return this.createCart({ uuid, items: newItems });
-      }
+  // - Если нет корзины - создаёт корзнину
+  // - Если не передан count - удаляет из корзины
+  // - Если товар в корзине - обновляет count
+  // - Если товара нет корзине - добавляет товар
+  async addToCart({
+    uuid,
+    productId,
+    count,
+  }: {
+    uuid: string;
+    productId: number;
+    count?: number;
+  }) {
+    const [cart, product] = await Promise.all([
+      getCartEntry(uuid),
+      getProductEntry(productId),
+    ]);
+    const cartItemPrice = calcItemPrice(product.price, count);
+    const newItem = { product, count, cartItemPrice };
 
-      return this.updateCart({
-        ...cart,
-        items: newItems,
-        removed: [],
+    if (!cart) {
+      return this.createCart({ uuid, items: [newItem] });
+    }
+
+    // Удаляем если кол-во товара 0
+    if (count < 1) {
+      return this.removeFromCart({ uuid, productId });
+    }
+
+    const { items, removed } = cart;
+    const itemInCart = items.find((i) => i.product.id === productId);
+    const newRemoved = removed.filter((i) => i.product.id === productId);
+
+    if (itemInCart) {
+      const itemInCartIndex = _.findIndex(items, {
+        product: { id: productId },
       });
-    },
-
-    async removeFromCart({
-      uuid,
-      productId,
-    }: {
-      uuid: string;
-      productId: number;
-    }) {
-      const cart = await getCartEntry(uuid);
-      const { items, removed } = cart;
-      const targetItem = items.find((i) => i.product.id === productId);
-
-      if (!targetItem) {
-        return this.updateCart(cart);
-      }
 
       return this.updateCart({
         ...cart,
-        items: items.filter((i) => i.product.id !== productId),
-        removed: [
-          _.omit(targetItem, 'id'),
-          ...removed.filter((i) => i.product.id !== productId),
+        items: [
+          ...items.slice(0, itemInCartIndex),
+          newItem,
+          ...items.slice(itemInCartIndex + 1),
         ],
+        removed: newRemoved,
       });
-    },
+    }
 
-    async restoreFromDeleted({
-      uuid,
-      productId,
-    }: {
-      uuid: string;
-      productId: number;
-    }) {
-      const cart = await getCartEntry(uuid);
-      const { items, removed } = cart;
-      const targetItem = removed.find((i) => i.product.id === productId);
+    return this.updateCart({
+      ...cart,
+      items: [newItem, ...items],
+      removed: newRemoved,
+    });
+  },
 
-      if (!targetItem) {
-        return this.updateCart(cart);
-      }
+  async addToCartMultiple({
+    uuid,
+    items,
+  }: {
+    uuid: string;
+    items: { id: number; count: number }[];
+  }) {
+    const cart = await getCartEntry(uuid);
 
-      return this.updateCart({
-        ...cart,
-        items: [targetItem, ...items],
-        removed: removed.filter((i) => i.product.id !== productId),
-      });
-    },
+    const newItems = await items.reduce(
+      async (acc: Promise<CartItem[]>, item: { id: number; count: number }) => {
+        const product = await getProductEntry(item.id);
+        const cartItemPrice = calcItemPrice(product.price, item.count);
+        const newItem = {
+          product,
+          count: item.count,
+          cartItemPrice,
+        };
+        return [...(await acc), newItem];
+      },
+      Promise.resolve([]),
+    );
 
-    async setEmptyCart({ uuid }: { uuid: string }) {
-      const cart = await getCartEntry(uuid);
+    if (!cart) {
+      return this.createCart({ uuid, items: newItems });
+    }
 
-      if (!cart) {
-        return this.createCart({ uuid, items: [] });
-      }
+    return this.updateCart({
+      ...cart,
+      items: newItems,
+      removed: [],
+    });
+  },
 
-      return this.updateCart({
-        ...cart,
-        items: [],
-        removed: [],
-      });
-    },
-  }),
-);
+  async removeFromCart({
+    uuid,
+    productId,
+  }: {
+    uuid: string;
+    productId: number;
+  }) {
+    const cart = await getCartEntry(uuid);
+    const { items, removed } = cart;
+    const targetItem = items.find((i) => i.product.id === productId);
+
+    if (!targetItem) {
+      return this.updateCart(cart);
+    }
+
+    return this.updateCart({
+      ...cart,
+      items: items.filter((i) => i.product.id !== productId),
+      removed: [
+        _.omit(targetItem, 'id'),
+        ...removed.filter((i) => i.product.id !== productId),
+      ],
+    });
+  },
+
+  async restoreFromDeleted({
+    uuid,
+    productId,
+  }: {
+    uuid: string;
+    productId: number;
+  }) {
+    const cart = await getCartEntry(uuid);
+    const { items, removed } = cart;
+    const targetItem = removed.find((i) => i.product.id === productId);
+
+    if (!targetItem) {
+      return this.updateCart(cart);
+    }
+
+    return this.updateCart({
+      ...cart,
+      items: [targetItem, ...items],
+      removed: removed.filter((i) => i.product.id !== productId),
+    });
+  },
+
+  async setEmptyCart({ uuid }: { uuid: string }) {
+    const cart = await getCartEntry(uuid);
+
+    if (!cart) {
+      return this.createCart({ uuid, items: [] });
+    }
+
+    return this.updateCart({
+      ...cart,
+      items: [],
+      removed: [],
+    });
+  },
+}));

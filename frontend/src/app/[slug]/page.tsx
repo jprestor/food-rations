@@ -35,16 +35,18 @@ export default async function StaticPage({
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
-      <Breadcrumbs className="mb-10" segments={[{ name: title || name }]} />
+      <Breadcrumbs className="mb-10" segments={[{ name: caption }]} />
 
       <div className="container">
         {title && (
-          <h1 className="Desktop/H1 mb-15 max-w-[65rem] lg:mb-14">{caption}</h1>
+          <h1 className="text-4xl font-medium mb-12 md:mb-7 md:text-3xl">
+            {title}
+          </h1>
         )}
 
         {description && (
           <div
-            className="prose mb-12"
+            className="prose mb-28 md:mb-16"
             dangerouslySetInnerHTML={{
               __html: description,
             }}

@@ -23,7 +23,7 @@ export default function CartItem({
         </div>
         <div className="text-sm mr-2 grow">
           <p className="mb-2">{name}</p>
-          <p className="text-gray_3">{weight && `${weight} г`}</p>
+          <p className="text-base-content">{weight && `${weight} г`}</p>
         </div>
         <a
           className="link text-base-400 ml-auto mt-2 self-start"

@@ -1303,16 +1303,15 @@ export interface ApiProductProduct extends Schema.CollectionType {
     >;
     nutritionalValue: Attribute.Component<'product.nutritional-value'>;
     order: Attribute.Integer & Attribute.DefaultTo<10>;
-    date: Attribute.Date;
     weekday: Attribute.Enumeration<
       [
-        '\u041F\u043E\u043D\u0435\u0434\u0435\u043B\u044C\u043D\u0438\u043A:1',
-        '\u0412\u0442\u043E\u0440\u043D\u0438\u043A:2',
-        '\u0421\u0440\u0435\u0434\u0430:3',
-        '\u0427\u0435\u0442\u0432\u0435\u0440\u0433:4',
-        '\u041F\u044F\u0442\u043D\u0438\u0446\u0430:5',
-        '\u0421\u0443\u0431\u0431\u043E\u0442\u0430:6',
-        '\u0412\u043E\u0441\u043A\u0440\u0435\u0441\u0435\u043D\u044C\u0435:7',
+        'a) \u041F\u043E\u043D\u0435\u0434\u0435\u043B\u044C\u043D\u0438\u043A',
+        'b) \u0412\u0442\u043E\u0440\u043D\u0438\u043A',
+        'c) \u0421\u0440\u0435\u0434\u0430',
+        'd) \u0427\u0435\u0442\u0432\u0435\u0440\u0433',
+        'e) \u041F\u044F\u0442\u043D\u0438\u0446\u0430',
+        'f) \u0421\u0443\u0431\u0431\u043E\u0442\u0430',
+        'g) \u0412\u043E\u0441\u043A\u0440\u0435\u0441\u0435\u043D\u044C\u0435',
       ]
     >;
     createdAt: Attribute.DateTime;
