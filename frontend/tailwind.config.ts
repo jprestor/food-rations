@@ -47,22 +47,6 @@ export default {
       sm: { max: '639px' },
     },
     extend: {
-      colors: {
-        black: '#202027',
-        white: '#fff',
-        gray: '#F4F4F8',
-        red: '#FF7518',
-        gray_2: '#C8C8D4',
-        gray_3: '#7F7E94',
-        gray_4: '#E7E7EE',
-        pink: '#FFE8E9',
-        error: '#C74952',
-        alert: '#EA4F24',
-        transparent: 'transparent',
-        currentColor: 'currentColor',
-        //
-        pumpkin: '#FF7518',
-      },
       borderRadius: {
         '4xl': '2rem',
       },

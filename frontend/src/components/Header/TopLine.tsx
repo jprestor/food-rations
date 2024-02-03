@@ -38,7 +38,7 @@ export default function TopLine() {
           <Link
             to={NAV.checkout}
             className={cn(
-              'bg-pumpkin font-bold flex h-10 items-center justify-center rounded-2xl px-2.5 text-white hover:bg-pumpkin',
+              'bg-primary font-bold flex h-10 items-center justify-center rounded-2xl px-2.5 text-base-100 hover:bg-primary',
               emptyCart && 'px-2',
             )}
           >

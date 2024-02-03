@@ -11,8 +11,12 @@ export default function Catalog() {
   const productList = useProductList();
   const productCategoryList = useProductCategoryList();
 
-  if (!productList.data || !productCategoryList.data) {
-    return 'Нет данных для каталога';
+  if (!productList.data?.length || !productCategoryList.data?.length) {
+    return (
+      <section className="alert container mt-14 mb-32">
+        Сегодня нет товаров
+      </section>
+    );
   }
 
   return (

@@ -46,7 +46,7 @@ export type DeliveryData = {
     color: string;
   }[];
   cartAmountForDeliveryDiscount: number;
-  deliveryDiscount: number;
+  deliveryDiscountAmount: number;
   mapCenter: string;
 };
 

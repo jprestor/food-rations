@@ -18,7 +18,7 @@ export default function EmptyCart() {
       <div className="text-2xl mb-2.5 max-w-[218px]">
         В вашей корзине пока пусто
       </div>
-      <Link className="text-sm text-pumpkin" to={NAV.catalog}>
+      <Link className="text-sm text-primary" to={NAV.catalog}>
         Давайте это исправим
       </Link>
     </div>

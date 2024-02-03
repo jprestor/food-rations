@@ -31,7 +31,7 @@ export default function CategoriesLine() {
     <>
       <div
         className={cn(
-          'h-16 bg-gray flex items-center w-full',
+          'h-16 bg-base-200 flex items-center w-full',
           isFixedNav && 'fixed left-0 z-[100] top-0 shadow-sm',
         )}
       >

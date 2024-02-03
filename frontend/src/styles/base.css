@@ -25,9 +25,9 @@
   }
 
   .v-margin {
-    @apply my-50 first-of-type:mt-0 md:my-24;
+    @apply my-48 first-of-type:mt-0 md:my-24;
   }
   .v-padding {
-    @apply pt-50 md:pt-23 pb-52 md:pb-24;
+    @apply pt-48 md:pt-23 pb-52 md:pb-24;
   }
 }

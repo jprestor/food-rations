@@ -1,29 +1,48 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Map } from '@pbe/react-yandex-maps';
 import cn from 'classnames';
 
 import DeliveryZonePolygon from './DeliveryZonePolygon';
 import { useDeliveryData } from '@/models/misc';
+import {
+  useSelectDeliveryAddress,
+  useDeliveryAddressString,
+} from '@/models/order';
 
 export default function MapChooseAddress({
-  callback,
-  initialAddress,
   className,
+  zoom = 11,
 }: {
-  callback: (data: {
-    street: string;
-    house: string;
-    coords: number[];
-    isInsideDeliveryZone: boolean;
-  }) => void;
   className?: string;
-  initialAddress?: string;
+  zoom?: number;
 }) {
   const ymaps = useRef<any>(null);
   const placemarkRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
   const polygonRefs = useRef<any[]>([]);
   const deliveryData = useDeliveryData();
+  const [error, setError] = useState<string | null>(null);
+  const setDeliveryData = useSelectDeliveryAddress();
+  const initialAddress = useDeliveryAddressString().data;
+
+  const onSelectAddressOnMap = ({
+    street,
+    house,
+    coords,
+    isInsideDeliveryZone,
+  }: {
+    street: string;
+    house: string;
+    coords: number[];
+    isInsideDeliveryZone: boolean;
+  }) => {
+    if (!isInsideDeliveryZone) {
+      setError('К сожалению адрес находится вне зоны нашей доставки');
+    } else {
+      setError(null);
+      setDeliveryData.mutateAsync({ address: { street, house }, coords });
+    }
+  };
 
   const createPlacemark = (coords: any) =>
     new ymaps.current.Placemark(
@@ -45,8 +64,12 @@ export default function MapChooseAddress({
       iconCaption: addressString,
     });
     const isInsideDeliveryZone = checkIsPointInsidePolygons(coords);
-    callback({ street, house, coords, isInsideDeliveryZone });
-    (document.getElementById('suggest') as any).value = addressString;
+    onSelectAddressOnMap({ street, house, coords, isInsideDeliveryZone });
+
+    const suggestInput = document.getElementById('suggest') as HTMLInputElement;
+    if (suggestInput) {
+      suggestInput.value = addressString;
+    }
   };
 
   const setPlacemarkPosition = (coords: any) => {
@@ -76,58 +99,69 @@ export default function MapChooseAddress({
   };
 
   return (
-    <Map
-      className={cn('h-96 w-full overflow-hidden rounded-lg', className)}
-      modules={['Placemark', 'geocode', 'SuggestView', 'suggest']}
-      instanceRef={mapRef}
-      onLoad={(ymapsInstance) => {
-        ymaps.current = ymapsInstance;
-        const suggestView = new (ymapsInstance as any).SuggestView('suggest', {
-          provider: {
-            suggest(request: any, options: any) {
-              return ymapsInstance
-                .suggest(`Казань, улица ${request}`, { results: 10 })
-                .then((items: any) => {
-                  const mappedItems = items.map((item: any) => {
-                    const displayName = item.displayName
-                      .replace('улица ', '')
-                      .replace(', Казань, Республика Татарстан', '');
-                    const value = displayName;
-                    return { ...item, displayName, value };
-                  });
-                  return mappedItems;
-                });
-            },
-          },
-        });
+    <>
+      <Map
+        className={cn('h-96 w-full overflow-hidden rounded-lg', className)}
+        modules={['Placemark', 'geocode', 'SuggestView', 'suggest']}
+        instanceRef={mapRef}
+        onLoad={(ymapsInstance) => {
+          ymaps.current = ymapsInstance;
+          const suggestInput = document.getElementById('suggest');
 
-        suggestView.events.add('select', onSuggestionSelect);
+          if (suggestInput) {
+            const suggestView = new (ymapsInstance as any).SuggestView(
+              'suggest',
+              {
+                provider: {
+                  suggest(request: any, options: any) {
+                    return ymapsInstance
+                      .suggest(`Казань, улица ${request}`, { results: 10 })
+                      .then((items: any) => {
+                        const mappedItems = items.map((item: any) => {
+                          const displayName = item.displayName
+                            .replace('улица ', '')
+                            .replace(', Казань, Республика Татарстан', '');
+                          const value = displayName;
+                          return { ...item, displayName, value };
+                        });
+                        return mappedItems;
+                      });
+                  },
+                },
+              },
+            );
 
-        if (initialAddress) {
-          ymaps.current
-            .geocode(`Казань, улица ${initialAddress}`)
-            .then((res: any) => {
-              const firstGeoObject = res.geoObjects.get(0);
-              const coords = firstGeoObject.geometry._coordinates;
-              setPlacemarkPosition(coords);
-            });
-        }
-      }}
-      state={{
-        center: deliveryData?.mapCenter,
-        zoom: 11,
-      }}
-    >
-      {deliveryData?.zonePrices.map(({ id, polygon, color }, idx) => (
-        <DeliveryZonePolygon
-          geometry={polygon}
-          zoneId={id}
-          color={color}
-          onClick={onMapClick}
-          ref={(el) => (polygonRefs.current[idx] = el)}
-          key={id}
-        />
-      ))}
-    </Map>
+            suggestView.events.add('select', onSuggestionSelect);
+          }
+
+          if (initialAddress) {
+            ymaps.current
+              .geocode(`Казань, улица ${initialAddress}`)
+              .then((res: any) => {
+                const firstGeoObject = res.geoObjects.get(0);
+                const coords = firstGeoObject.geometry._coordinates;
+                setPlacemarkPosition(coords);
+              });
+          }
+        }}
+        state={{
+          center: deliveryData?.mapCenter,
+          zoom,
+        }}
+      >
+        {deliveryData?.zonePrices.map(({ id, polygon, color }, idx) => (
+          <DeliveryZonePolygon
+            geometry={polygon}
+            zoneId={id}
+            color={color}
+            onClick={onMapClick}
+            ref={(el) => (polygonRefs.current[idx] = el)}
+            key={id}
+          />
+        ))}
+      </Map>
+
+      {error && <div className="text-alert pt-[5px] text-sm">{error}</div>}
+    </>
   );
 }
