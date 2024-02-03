@@ -75,7 +75,7 @@ function Drawer({
       >
         <a
           className={cn(
-            'transiton hover:text-Primary/Blue top-18 right-12.5 absolute hover:rotate-180 lg:left-auto lg:right-5 lg:top-5 lg:text-black',
+            'transition link top-18 -right-12 absolute hover:rotate-180 lg:left-auto lg:right-5 lg:top-5 lg:text-black',
             crossStyle,
           )}
           onClick={toggleDrawer}
