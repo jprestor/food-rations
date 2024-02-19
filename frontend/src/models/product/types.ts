@@ -24,4 +24,5 @@ export type Product = {
     | 'e) Пятница'
     | 'f) Суббота'
     | 'd) Воскресенье';
+  order: number;
 };
