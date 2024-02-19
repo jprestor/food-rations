@@ -821,44 +821,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface ApiAboutAbout extends Schema.SingleType {
-  collectionName: 'abouts';
-  info: {
-    singularName: 'about';
-    pluralName: 'abouts';
-    displayName: '\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 "\u041E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438"';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String;
-    image1: Attribute.Media;
-    image2: Attribute.Media;
-    image3: Attribute.Media;
-    image4: Attribute.Media;
-    image5: Attribute.Media;
-    image6: Attribute.Media;
-    meta: Attribute.Component<'all.meta'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::about.about',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::about.about',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiBannerSliderItemBannerSliderItem
   extends Schema.CollectionType {
   collectionName: 'banner_slider_items';
@@ -915,72 +877,6 @@ export interface ApiCartCart extends Schema.CollectionType {
     createdBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiContactsPageContactsPage extends Schema.SingleType {
-  collectionName: 'contacts_pages';
-  info: {
-    singularName: 'contacts-page';
-    pluralName: 'contacts-pages';
-    displayName: '\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B"';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String;
-    caption: Attribute.String;
-    meta: Attribute.Component<'all.meta'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::contacts-page.contacts-page',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::contacts-page.contacts-page',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiDeliveryPaymentPageDeliveryPaymentPage
-  extends Schema.SingleType {
-  collectionName: 'delivery_payment_pages';
-  info: {
-    singularName: 'delivery-payment-page';
-    pluralName: 'delivery-payment-pages';
-    displayName: '\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u0438 \u043E\u043F\u043B\u0430\u0442\u0430"';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    mapSectionTitle: Attribute.String;
-    meta: Attribute.Component<'all.meta'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::delivery-payment-page.delivery-payment-page',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::delivery-payment-page.delivery-payment-page',
-      'oneToOne',
-      'admin::user'
-    > &
       Attribute.Private;
   };
 }
@@ -1432,11 +1328,8 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'api::about.about': ApiAboutAbout;
       'api::banner-slider-item.banner-slider-item': ApiBannerSliderItemBannerSliderItem;
       'api::cart.cart': ApiCartCart;
-      'api::contacts-page.contacts-page': ApiContactsPageContactsPage;
-      'api::delivery-payment-page.delivery-payment-page': ApiDeliveryPaymentPageDeliveryPaymentPage;
       'api::form-request.form-request': ApiFormRequestFormRequest;
       'api::mailing-letter.mailing-letter': ApiMailingLetterMailingLetter;
       'api::misc.misc': ApiMiscMisc;
