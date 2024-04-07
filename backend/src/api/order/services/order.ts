@@ -3,38 +3,62 @@
  */
 
 import { factories } from '@strapi/strapi';
-import utils from '@strapi/utils';
 import * as turf from '@turf/turf';
 import axios from 'axios';
 
-const { ApplicationError } = utils.errors;
+type OrderPrices = {
+  cartDiscount: number | null;
+  cartProductsPrice: number | null;
+  cartTotalPrice: number | null;
+  deliveryPrice: number | null;
+  deliveryDiscount: number | null;
+  totalPrice: number | null;
+};
 
 export default factories.createCoreService(
   'api::order.order',
   ({ strapi }) => ({
     // Возвращает тотал цен
-    async getOrderPrices(deliveryZone: { cost: number }) {
+    async getOrderPrices(deliveryZone?: {
+      cost: number;
+    }): Promise<OrderPrices> {
       const ctx = strapi.requestContext.get();
       const { session } = ctx;
       const cart = await strapi.service('api::cart.cart').getCart(session.uuid);
-      const cartPrice = cart?.totalPrice || null;
+      const cartTotal = cart?.totalPrice || null;
+      const prices = {
+        cartDiscount: cart?.discount || null,
+        cartProductsPrice: cart?.productPrice || null,
+        cartTotalPrice: cartTotal,
+      };
+
+      if (!deliveryZone) {
+        return {
+          ...prices,
+          deliveryPrice: null,
+          deliveryDiscount: null,
+          totalPrice: cartTotal,
+        };
+      }
+
       const { deliveryPrice, deliveryDiscount } = await strapi
         .service('api::order.order')
-        .getDeliveryPrice({
-          cartPrice,
-          deliveryZone,
-        });
-      const totalPrice = cartPrice ? cartPrice + deliveryPrice : null;
+        .getDeliveryPrice({ cartTotal, deliveryZone });
 
-      return { cartPrice, deliveryPrice, deliveryDiscount, totalPrice };
+      return {
+        ...prices,
+        deliveryPrice,
+        deliveryDiscount,
+        totalPrice: cartTotal ? cartTotal + deliveryPrice : null,
+      };
     },
 
     // Возвращает цену доставки заказа
     async getDeliveryPrice({
-      cartPrice = 0,
+      cartTotal = 0,
       deliveryZone,
     }: {
-      cartPrice: number;
+      cartTotal: number;
       deliveryZone: { cost: number };
     }) {
       const misc = await strapi.entityService.findMany('api::misc.misc', {
@@ -46,7 +70,7 @@ export default factories.createCoreService(
         deliveryData;
 
       const deliveryDiscount =
-        cartPrice >= cartAmountForDeliveryDiscount ? deliveryDiscountAmount : 0;
+        cartTotal >= cartAmountForDeliveryDiscount ? deliveryDiscountAmount : 0;
       const deliveryPrice = Math.max(0, deliveryZonePrice - deliveryDiscount);
 
       return { deliveryPrice, deliveryDiscount };
@@ -54,19 +78,24 @@ export default factories.createCoreService(
 
     // Возвращает зону доставки по координатам адреса
     async getUserDeliveryZone(
-      deliveryAddressCoords: number[],
-    ): Promise<{ cost: number } | undefined> {
+      deliveryAddressCoords?: number[],
+    ): Promise<{ cost: number } | null> {
+      if (!deliveryAddressCoords) {
+        return null;
+      }
+
       const misc = await strapi.entityService.findMany('api::misc.misc', {
         populate: ['deliveryData.zonePrices'],
       });
-      const zonePrices = misc.deliveryData.zonePrices;
+      const { zonePrices } = misc.deliveryData;
+
       const zone = zonePrices.find(({ polygon }) => {
         const addressPoint = turf.point(deliveryAddressCoords);
         const deliveryZone = turf.polygon(polygon as []);
         return turf.booleanPointInPolygon(addressPoint, deliveryZone);
       });
 
-      return zone;
+      return zone || null;
     },
 
     // Получает координаты объекта по его адресу и возращает их

@@ -38,12 +38,14 @@ export default factories.createCoreController(
         return ctx.badRequest('Адрес не входит в зону доставки');
       }
 
-      const { cartPrice, deliveryPrice, deliveryDiscount, totalPrice } =
-        await strapi.service('api::order.order').getOrderPrices(deliveryZone);
+      const orderPrices = await strapi
+        .service('api::order.order')
+        .getOrderPrices(deliveryZone);
 
       // Create order
       const newOrder = await strapi.entityService.create('api::order.order', {
         data: {
+          ...orderPrices,
           executionStatus: `${ExecutionStatuses.NEW}`,
           paymentStatus: `${PaymentStatuses.UNPAID}`,
           user,
@@ -52,10 +54,6 @@ export default factories.createCoreController(
           name,
           address,
           comment,
-          cartPrice,
-          deliveryPrice,
-          deliveryDiscount,
-          totalPrice,
           cart: cart.items,
         },
         populate: '*',
@@ -64,7 +62,7 @@ export default factories.createCoreController(
       // Сreate payment
       const payment = await strapi
         .service('api::payment.payment')
-        .createPayment(newOrder);
+        .createOrderPayment(newOrder.id);
 
       // Clear cart
       await strapi

@@ -38,13 +38,13 @@ export default function TopLine() {
           <Link
             to={NAV.checkout}
             className={cn(
-              'bg-primary font-bold flex h-10 items-center justify-center rounded-2xl px-2.5 text-base-100 hover:bg-primary',
+              'bg-primary flex h-10 gap-1.5 items-center justify-center rounded-2xl px-2.5 text-base-100 hover:bg-primary',
               emptyCart && 'px-2',
             )}
           >
-            <Svg className="mr-1" id="cart" width="24" height="24" />
-            {prices?.data?.totalPrice && (
-              <span className="sm:hidden">{prices.data.totalPrice} ₽</span>
+            <Svg id="cart" width="24" height="24" />
+            {prices?.totalPrice && (
+              <span className="sm:hidden">{prices.totalPrice} ₽</span>
             )}
           </Link>
         </div>

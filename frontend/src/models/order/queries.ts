@@ -19,17 +19,17 @@ export const orderQueries = {
   }),
   prices: (args?: OrderPricesArgs) => ({
     queryKey: ['order', 'prices'],
-    queryFn: () => args && getOrderPrices(args),
+    queryFn: () => getOrderPrices(args),
   }),
 };
 
 export function useSelectedDeliveryAddress() {
-  return useQuery(orderQueries.selectedDeliveryAddress());
+  return useQuery(orderQueries.selectedDeliveryAddress()).data;
 }
 
 export function useOrderPrices() {
   const query = useSelectedDeliveryAddress();
-  return useQuery(orderQueries.prices(query.data?.coords));
+  return useQuery(orderQueries.prices(query?.coords)).data;
 }
 
 export function useDeliveryAddressString() {

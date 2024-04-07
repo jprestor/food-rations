@@ -1,19 +1,12 @@
 import { PaymentStatuses } from '../../../../constants';
 
 export default {
+  /* Order payment */
   create: async ({ request, ...ctx }) => {
     const { orderId } = request.body;
-    const order = await strapi.entityService.findOne(
-      'api::order.order',
-      orderId,
-    );
 
     try {
-      const payment = await strapi
-        .service('api::payment.payment')
-        .createPayment(order);
-
-      return payment;
+      return strapi.service('api::payment.payment').createOrderPayment(orderId);
     } catch (err) {
       console.log('create controller error', err);
       ctx.body = err;
@@ -53,4 +46,6 @@ export default {
       ctx.body = err;
     }
   },
+
+  /* Booking payment */
 };

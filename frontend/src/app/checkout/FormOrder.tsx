@@ -16,7 +16,6 @@ import {
   useSelectedDeliveryAddress,
   useOrderPrices,
   useCreateOrder,
-  type ICreateOrderData,
 } from '@/models/order';
 import { PHONE_REGEXP } from '@/constants';
 import { cn } from '@/lib';
@@ -32,7 +31,7 @@ export default function FormOrder({ className }: { className?: string }) {
   const orderPrices = useOrderPrices();
   const router = useRouter();
 
-  const methods = useForm<ICreateOrderData>({
+  const methods = useForm({
     resolver: yupResolver(
       Yup.object({
         phone: Yup.string()
@@ -45,6 +44,7 @@ export default function FormOrder({ className }: { className?: string }) {
           street: Yup.string().required('Это поле обязательное'),
           house: Yup.string().required('Это поле обязательное'),
         }),
+        comment: Yup.string(),
       }),
     ),
   });
@@ -64,12 +64,12 @@ export default function FormOrder({ className }: { className?: string }) {
       reset({
         phone: user?.data?.phone || '',
         name: user?.data?.username || '',
-        address: deliveryData.data?.address,
+        address: deliveryData?.address,
       });
     }
   }, [isAuthenticated]);
 
-  const onSubmit = async (formValues: ICreateOrderData) => {
+  const onSubmit = handleSubmit(async (formValues) => {
     try {
       const res = await createOrder.mutateAsync(formValues);
       console.log('res', res);
@@ -79,13 +79,13 @@ export default function FormOrder({ className }: { className?: string }) {
       console.log('onSubmit error', error);
       setError('root', { message: error?.info?.error?.message || 'Ошибка' });
     }
-  };
+  });
 
   return (
     <FormProvider {...methods}>
       <form
         className={cn(!isAuthenticated && 'pointer-events-none opacity-50')}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
       >
         <div className="flex flex-col gap-12">
           {isAuthenticated && (
@@ -127,8 +127,7 @@ export default function FormOrder({ className }: { className?: string }) {
           type="submit"
         >
           Оплатить заказ
-          {orderPrices.data?.totalPrice &&
-            ` на ${orderPrices.data.totalPrice} ₽`}
+          {orderPrices?.totalPrice && ` на ${orderPrices.totalPrice} ₽`}
         </Button>
 
         {!isEmpty(errors) && (

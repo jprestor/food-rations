@@ -5,18 +5,19 @@ import EmptyCart from '@/components/EmptyCart';
 import { Link, Alert } from '@/ui';
 import { useCart } from '@/models/cart';
 import { useOrderPrices } from '@/models/order';
+import { NAV } from '@/constants';
 import { cn } from '@/lib';
 
 export default function StickyCart({ className }: { className?: string }) {
-  const cart = useCart();
-  const isEmptyCart =
-    cart.data === null || (!!cart.data && cart.data.items.length < 1);
-  const orderPrices = useOrderPrices();
+  const { data: cart, isPending, isError } = useCart();
+  const isEmptyCart = cart === null || (!!cart && cart.items.length < 1);
+  const { deliveryPrice } = useOrderPrices() || {};
+  const { totalPrice } = cart || {};
 
-  if (cart.isPending) {
+  if (isPending) {
     return <Alert type="warning">Пока нет данных</Alert>;
   }
-  if (cart.isError) {
+  if (isError) {
     return <Alert type="error">Ошибка</Alert>;
   }
 
@@ -28,40 +29,30 @@ export default function StickyCart({ className }: { className?: string }) {
       )}
     >
       <p className="text-xl mb-3 font-semibold">Корзина</p>
-      {!isEmptyCart ? (
-        <>
-          <div className="mb-6 h-[calc(100%-150px)] overflow-y-auto">
-            <div className="pr-3">
-              {cart.data!.items.map((cartItem) => (
-                <CartItem {...cartItem} key={cartItem.product.id} />
-              ))}
-            </div>
+      <div className="flex grow flex-col justify-between">
+        {isEmptyCart ? (
+          <EmptyCart />
+        ) : (
+          <div className="h-[calc(100vh-265px)] overflow-y-auto xl:h-auto">
+            {cart.items.map((cartItem) => (
+              <CartItem {...cartItem} key={cartItem.product.id} />
+            ))}
           </div>
+        )}
 
-          <div className="text-sm mt-auto">
-            <div className="mb-2 flex items-center gap-2">
-              {(orderPrices.data || orderPrices.isLoading) && (
-                <>
-                  <p>Доставка</p>
-                  <span>·</span>
-                </>
-              )}
-              {orderPrices.isLoading && (
-                <span className="loading loading-spinner text-primary loading-sm" />
-              )}
-              {orderPrices.data?.deliveryPrice && !orderPrices.isLoading && (
-                <span>{orderPrices.data.deliveryPrice} ₽</span>
-              )}
-            </div>
+        <div className="flex justify-between items-center gap-5">
+          <div className="font-semibold">Доставка</div>
+          <span className="text-xs font-medium">
+            {deliveryPrice ? `${deliveryPrice}  ₽` : 'Укажите адрес доставки'}
+          </span>
+        </div>
 
-            <Link className="mt-4 btn btn-primary" to="/checkout">
-              Оформить за {cart.data!.totalPrice} ₽
-            </Link>
-          </div>
-        </>
-      ) : (
-        <EmptyCart />
-      )}
+        {totalPrice ? (
+          <Link className="btn btn-primary mt-4 flex" to={NAV.checkout}>
+            Оформить за {totalPrice} ₽
+          </Link>
+        ) : null}
+      </div>
     </div>
   );
 }

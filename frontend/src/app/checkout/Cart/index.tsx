@@ -9,8 +9,7 @@ import { useOrderPrices } from '@/models/order';
 export default function OrderCart() {
   const cart = useCart();
   const orderPrices = useOrderPrices();
-  const { deliveryDiscount, deliveryPrice, totalPrice } =
-    orderPrices.data || {};
+  const { deliveryDiscount, deliveryPrice, totalPrice } = orderPrices || {};
   const isEmptyCart =
     cart.data === null || (!!cart.data && cart.data.items.length < 1);
 
@@ -34,7 +33,7 @@ export default function OrderCart() {
           </div>
 
           {/* Total */}
-          {orderPrices.data && (
+          {orderPrices && (
             <div className="pt-4">
               <div className="grid gap-4 border-b border-b-base-300 pb-4">
                 <div className="flex justify-between">

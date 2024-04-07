@@ -27,12 +27,12 @@ export async function createOrder(data: ICreateOrderData) {
   return resData;
 }
 
-export async function getOrderPrices(deliveryAddressCoords: number[]) {
-  const res = await api(
-    `${CALCULATE_ORDER_PRICES_ROUTE}?coords=${JSON.stringify(
-      deliveryAddressCoords,
-    )}`,
-  );
+export async function getOrderPrices(deliveryAddressCoords?: number[]) {
+  const params = {
+    coords: deliveryAddressCoords,
+  };
+
+  const res = await api(CALCULATE_ORDER_PRICES_ROUTE, params);
   if (!res.ok) {
     throw new ApiError(getOrderPrices.name, await res.json(), res.status);
   }

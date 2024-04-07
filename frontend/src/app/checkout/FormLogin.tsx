@@ -15,13 +15,11 @@ import { cn } from '@/lib';
 function FormLogin({ className }: { className?: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const defaultValues = {
-    phone: '',
-    name: '',
-  };
-
   const methods = useForm({
-    defaultValues,
+    defaultValues: {
+      phone: '',
+      name: '',
+    },
     resolver: yupResolver(
       Yup.object({
         phone: Yup.string()
@@ -41,15 +39,15 @@ function FormLogin({ className }: { className?: string }) {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = methods;
 
-  const onFormSubmit = () => {
+  const onFormSubmit = handleSubmit(() => {
     setIsModalOpen(true);
-  };
+  });
 
   const userPhone = watch('phone');
   const userName = watch('name');
 
   return (
-    <form className={cn(className)} onSubmit={handleSubmit(onFormSubmit)}>
+    <form className={cn(className)} onSubmit={onFormSubmit}>
       <h3 className="text-xl font-semibold mb-5">Войти в личный кабинет</h3>
 
       <div className="mb-9 grid gap-5 sm:gap-2 md:mb-6">

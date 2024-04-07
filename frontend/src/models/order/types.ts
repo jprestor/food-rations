@@ -11,7 +11,9 @@ export type Order = {
   userId: number;
   address: Address;
   cart: CartItem[];
-  cartPrice: number;
+  cartProductsPrice: number;
+  cartDiscount: number;
+  cartTotalPrice: number;
   deliveryPrice: number;
   deliveryDiscount: number;
   totalPrice: number;
@@ -22,7 +24,9 @@ export type Order = {
 };
 
 export type OrderPrices = {
-  cartPrice: number | null;
+  cartProductsPrice: number | null;
+  cartDiscount: number | null;
+  cartTotalPrice: number | null;
   deliveryPrice: number | null;
   deliveryDiscount: number | null;
   totalPrice: number | null;
