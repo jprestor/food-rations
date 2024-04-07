@@ -1,3 +1,5 @@
+import TelegramBot from 'node-telegram-bot-api';
+
 import { PaymentStatuses } from '../../../../constants';
 
 export default {
@@ -19,7 +21,7 @@ export default {
       const { orderId } = object.metadata;
 
       if (event !== 'payment.succeeded') {
-        return await strapi.entityService.findOne('api::order.order', orderId);
+        return strapi.entityService.findOne('api::order.order', orderId);
       }
 
       // Update order payment status
@@ -28,6 +30,22 @@ export default {
         orderId,
         { data: { paymentStatus: PaymentStatuses.PAID } },
       );
+
+      const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
+        polling: true,
+      });
+
+      bot
+        .sendMessage(
+          process.env.TELEGRAM_ADMIN_CHAT_ID,
+          'Новый заказ. Оплачено',
+        )
+        .catch((error) => {
+          console.error(
+            'Ошибка при отправке telegram-сообщения администратору:',
+            error,
+          );
+        });
 
       // Send email to user
       // const user = await strapi
