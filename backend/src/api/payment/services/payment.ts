@@ -35,7 +35,7 @@ export default factories.createCoreService(
         },
         confirmation: {
           type: 'redirect',
-          return_url: `${CONFIRM_RETURN_URL}/${order.id}`,
+          return_url: `${CONFIRM_RETURN_URL}/`,
         },
         description: `Заказ №${order.id}`,
         metadata: {
