@@ -63,7 +63,12 @@ export default {
       */
 
       const cartString = order.cart
-        .map((i) => `_${i.product.name}_ x${i.count}, ${i.cartItemPrice}р`)
+        .map(
+          (i) =>
+            `_${escapeTelegramEntities(i.product.name)}_ x${i.count}, ${
+              i.cartItemPrice
+            }р`,
+        )
         .join('\n');
 
       const userName = escapeTelegramEntities(order.name);
