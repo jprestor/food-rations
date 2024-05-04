@@ -155,7 +155,7 @@ export default function MapChooseAddress({
             zoneId={id}
             color={color}
             onClick={onMapClick}
-            ref={(el) => (polygonRefs.current[idx] = el)}
+            ref={(el) => (polygonRefs.current[idx] = el) as any}
             key={id}
           />
         ))}
