@@ -89,8 +89,6 @@ export default {
           )}`
         : '';
 
-      console.log('orderComment', orderComment);
-
       const messageToAdminChat = `*Заказ №${order.id}*
 
 *Состав заказа:*
@@ -108,6 +106,8 @@ ${cartString}
 *Адрес доставки:*
 ${addressString}${orderComment}
       `;
+
+      console.log('messageToAdminChat', messageToAdminChat);
 
       bot
         .sendMessage(process.env.TELEGRAM_ADMIN_CHAT_ID, messageToAdminChat, {
