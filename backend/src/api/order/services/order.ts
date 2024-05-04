@@ -26,9 +26,10 @@ export default factories.createCoreService(
       const { session } = ctx;
       const cart = await strapi.service('api::cart.cart').getCart(session.uuid);
       const cartTotal = cart?.totalPrice || null;
+      console.log('cart', cart);
       const prices = {
         cartDiscount: cart?.discount || null,
-        cartProductsPrice: cart?.productPrice || null,
+        cartProductsPrice: cart?.productsPrice || null,
         cartTotalPrice: cartTotal,
       };
 

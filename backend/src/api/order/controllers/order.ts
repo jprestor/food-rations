@@ -42,6 +42,8 @@ export default factories.createCoreController(
         .service('api::order.order')
         .getOrderPrices(deliveryZone);
 
+      console.log('orderPrices', orderPrices);
+
       // Create order
       const newOrder = await strapi.entityService.create('api::order.order', {
         data: {
