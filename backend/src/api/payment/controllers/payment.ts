@@ -74,19 +74,21 @@ export default {
       const userName = escapeTelegramEntities(order.name);
       const userPhone = escapeTelegramEntities(order.phone);
 
-      let addressString = `${order.address.street} ${order.address.house}`;
+      let addressStringRaw = `${order.address.street} ${order.address.house}`;
       if (order.address.apartment) {
-        addressString += `, кв ${order.address.apartment}`;
+        addressStringRaw += `, кв ${order.address.apartment}`;
       }
       if (order.address.entrance) {
-        addressString += `, ${order.address.entrance} подъезд`;
+        addressStringRaw += `, ${order.address.entrance} подъезд`;
       }
       if (order.address.floor) {
-        addressString += `, ${order.address.floor} этаж`;
+        addressStringRaw += `, ${order.address.floor} этаж`;
       }
       if (order.address.intercom) {
-        addressString += `, домофон ${order.address.intercom}`;
+        addressStringRaw += `, домофон ${order.address.intercom}`;
       }
+
+      const addressString = escapeTelegramEntities(addressStringRaw);
 
       const orderComment = order.comment
         ? `\n\n*Комментарий к заказу:*\n${escapeTelegramEntities(
@@ -111,8 +113,6 @@ ${cartString}
 *Адрес доставки:*
 ${addressString}${orderComment}
       `;
-
-      console.log('messageToAdminChat', messageToAdminChat);
 
       bot
         .sendMessage(process.env.TELEGRAM_ADMIN_CHAT_ID, messageToAdminChat, {
