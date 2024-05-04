@@ -30,14 +30,18 @@ export default {
         orderId,
         {
           data: { paymentStatus: PaymentStatuses.PAID },
-          populate: ['cart', 'user', 'address'],
+          populate: {
+            cart: { populate: { product: true } },
+            user: true,
+            address: true,
+          },
         },
       );
 
       console.log('order', order);
 
       const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
-        polling: true,
+        // polling: true,
       });
 
       /*
@@ -62,24 +66,43 @@ export default {
         .map((i) => `_${i.product.name}_ x${i.count}, ${i.cartItemPrice}р`)
         .join('\n');
 
+      const userName = order.name.replace('+7', '8');
+      const userPhone = order.phone.replace('+7', '8');
+
+      let addressString = `${order.address.street} ${order.address.house}`;
+      if (order.address.apartment) {
+        addressString += `, кв ${order.address.apartment}`;
+      }
+      if (order.address.entrance) {
+        addressString += `, ${order.address.entrance} подъезд`;
+      }
+      if (order.address.floor) {
+        addressString += `, ${order.address.floor} этаж`;
+      }
+      if (order.address.intercom) {
+        addressString += `, домофон ${order.address.intercom}`;
+      }
+
       bot
         .sendMessage(
           process.env.TELEGRAM_ADMIN_CHAT_ID,
           `*Заказ №${order.id}*
 
-          *Состав заказа:*
-          ${cartString}
+*Состав заказа:*
+${cartString}
 
-          Цена товаров: ${order.cartProductsPrice}
-          Цена доставки: ${order.deliveryPrice}
-          Скидка на доставку: ${order.deliveryDiscount}
-          *__Итоговая цена__: ${order.totalPrice}
+Цена товаров: ${order.cartTotalPrice}р
+Цена доставки: ${order.deliveryPrice}р
+Скидка на доставку: ${order.deliveryDiscount}р
+*__Итоговая цена__: ${order.totalPrice}р*
 
-          *Клиент:*
-          ${order.name}, [${order.phone}](${order.phone})
+*Клиент:*
+ФИО: ${userName}
+Телефон: [${userPhone}](${userPhone})
 
-          *Адрес доставки:*
-          ${order.address} 7, кв 31, 1 подъезд, 3 этаж, домофон есть`,
+*Адрес доставки:*
+${addressString}
+`,
           {
             parse_mode: 'MarkdownV2',
           },
