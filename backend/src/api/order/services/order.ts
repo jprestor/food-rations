@@ -7,8 +7,6 @@ import * as turf from '@turf/turf';
 import axios from 'axios';
 
 type OrderPrices = {
-  cartDiscount: number | null;
-  cartProductsPrice: number | null;
   cartTotalPrice: number | null;
   deliveryPrice: number | null;
   deliveryDiscount: number | null;
@@ -26,10 +24,8 @@ export default factories.createCoreService(
       const { session } = ctx;
       const cart = await strapi.service('api::cart.cart').getCart(session.uuid);
       const cartTotal = cart?.totalPrice || null;
-      console.log('cart', cart);
+
       const prices = {
-        cartDiscount: cart?.discount || null,
-        cartProductsPrice: cart?.productsPrice || null,
         cartTotalPrice: cartTotal,
       };
 

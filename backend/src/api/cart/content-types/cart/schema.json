@@ -12,13 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "discount": {
-      "type": "integer",
-      "default": 0
-    },
-    "productsPrice": {
-      "type": "integer"
-    },
     "totalPrice": {
       "type": "integer"
     },

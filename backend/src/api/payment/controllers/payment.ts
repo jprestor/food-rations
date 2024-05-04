@@ -30,33 +30,56 @@ export default {
         orderId,
         {
           data: { paymentStatus: PaymentStatuses.PAID },
-          populate: ['cart.product'],
+          populate: ['cart', 'user', 'address'],
         },
       );
+
+      console.log('order', order);
 
       const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
         polling: true,
       });
 
-      const orderCartString = order.cart.map((i) => i.product.name);
+      /*
+        `*Заказ №${order.id}*\n\n
+        *Состав заказа:*\n
+        _Пицца с пармской ветчиной_ x1, 450р\n
+        _Фуагра_ x1, 1000р\n
+        _Фаршированный острый перчик_ x3, 750р\n
+        _Суп с горохом и копченостями_ x2 500р\n
+        _Столовые приборы_ x3, 0р\n\n
+        Цена товаров: 2700р\n
+        Цена доставки: 300р\n
+        Скидка на доставку: 0р\n
+        *__Итоговая цена__: 3000р*\n\n
+        *Клиент:*\n
+        Василий В, [89218601111](89218601111)\n\n
+        *Адрес доставки:*\n
+        Иоанна кронштадтского 7, кв 31, 1 подъезд, 3 этаж, домофон есть`,
+      */
+
+      const cartString = order.cart
+        .map((i) => `_${i.product.name}_ x${i.count}, ${i.cartItemPrice}р`)
+        .join('\n');
 
       bot
         .sendMessage(
           process.env.TELEGRAM_ADMIN_CHAT_ID,
-          `*Заказ №${order.id}*\n\n
-          *Состав заказа:*\n
-          _Пицца с пармской ветчиной_ x1, 450р\n
-          _Фуагра_ x1, 1000р\n_Фаршированный острый перчик_ x3, 750р\n
-          _Суп с горохом и копченостями_ x2 500р\n
-          _Столовые приборы_ x3, 0р\n\n
-          Цена товаров: 2700р\n
-          Цена доставки: 300р\n
-          Скидка на доставку: 0р\n
-          *__Итоговая цена__: 3000р*\n\n
-          *Клиент:*\n
-          Василий В, [89218601111](89218601111)\n\n
-          *Адрес доставки:*\n
-          Иоанна кронштадтского 7, кв 31, 1 подъезд, 3 этаж, домофон есть`,
+          `*Заказ №${order.id}*
+
+          *Состав заказа:*
+          ${cartString}
+
+          Цена товаров: ${order.cartProductsPrice}
+          Цена доставки: ${order.deliveryPrice}
+          Скидка на доставку: ${order.deliveryDiscount}
+          *__Итоговая цена__: ${order.totalPrice}
+
+          *Клиент:*
+          ${order.name}, [${order.phone}](${order.phone})
+
+          *Адрес доставки:*
+          ${order.address} 7, кв 31, 1 подъезд, 3 этаж, домофон есть`,
           {
             parse_mode: 'MarkdownV2',
           },

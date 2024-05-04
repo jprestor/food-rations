@@ -40,12 +40,6 @@
       "repeatable": true,
       "component": "all.cart-item"
     },
-    "cartDiscount": {
-      "type": "integer"
-    },
-    "cartProductsPrice": {
-      "type": "integer"
-    },
     "cartTotalPrice": {
       "type": "integer"
     },

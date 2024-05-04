@@ -875,8 +875,6 @@ export interface ApiCartCart extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    discount: Attribute.Integer & Attribute.DefaultTo<0>;
-    productsPrice: Attribute.Integer;
     totalPrice: Attribute.Integer;
     items: Attribute.Component<'all.cart-item', true>;
     removed: Attribute.Component<'all.cart-item', true>;
@@ -1010,8 +1008,6 @@ export interface ApiOrderOrder extends Schema.CollectionType {
     userId: Attribute.Integer;
     address: Attribute.Component<'user.address'>;
     cart: Attribute.Component<'all.cart-item', true>;
-    cartDiscount: Attribute.Integer;
-    cartProductsPrice: Attribute.Integer;
     cartTotalPrice: Attribute.Integer;
     deliveryPrice: Attribute.Integer;
     deliveryDiscount: Attribute.Integer;
