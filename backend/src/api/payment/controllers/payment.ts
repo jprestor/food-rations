@@ -28,17 +28,22 @@ export default {
       const order = await strapi.entityService.update(
         'api::order.order',
         orderId,
-        { data: { paymentStatus: PaymentStatuses.PAID } },
+        {
+          data: { paymentStatus: PaymentStatuses.PAID },
+          populate: ['cart.product'],
+        },
       );
 
       const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
         polling: true,
       });
 
+      const orderCartString = order.cart.map((i) => i.product.name);
+
       bot
         .sendMessage(
           process.env.TELEGRAM_ADMIN_CHAT_ID,
-          '`Заказ №1`\n\n*Состав заказа:*\n_Пицца с пармской ветчиной_ x1, 450р\n_Фуагра_ x1, 1000р\n_Фаршированный острый перчик_ x3, 750р\n_Суп с горохом и копченостями_ x2 500р\n_Столовые приборы_ x3, 0р\n\nЦена товаров: 2700р\nЦена доставки: 300р\nСкидка на доставку: 0р\n*__Итоговая цена__: 3000р*\n\n*Клиент:*\nВасилий В, [89218601111](89218601111)\n\n*Адрес доставки:*\nИоанна кронштадтского 7, кв 31, 1 подъезд, 3 этаж, домофон есть',
+          `*Заказ №${order.id}*\n\n*Состав заказа:*\n_Пицца с пармской ветчиной_ x1, 450р\n_Фуагра_ x1, 1000р\n_Фаршированный острый перчик_ x3, 750р\n_Суп с горохом и копченостями_ x2 500р\n_Столовые приборы_ x3, 0р\n\nЦена товаров: 2700р\nЦена доставки: 300р\nСкидка на доставку: 0р\n*__Итоговая цена__: 3000р*\n\n*Клиент:*\nВасилий В, [89218601111](89218601111)\n\n*Адрес доставки:*\nИоанна кронштадтского 7, кв 31, 1 подъезд, 3 этаж, домофон есть`,
           {
             parse_mode: 'MarkdownV2',
           },

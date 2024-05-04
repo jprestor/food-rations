@@ -26,6 +26,7 @@ export default factories.createCoreService(
       );
 
       const payload: ICreatePayment = {
+        capture: true,
         amount: {
           value: String(order.totalPrice),
           currency: 'RUB',
