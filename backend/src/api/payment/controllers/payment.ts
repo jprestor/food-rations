@@ -1,6 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 
 import { PaymentStatuses } from '../../../../constants';
+import { escapeTelegramEntities } from '../utils';
 
 export default {
   /* Order payment */
@@ -38,8 +39,7 @@ export default {
         },
       );
 
-      console.log('order', order);
-
+      // Send telegram message for admin
       const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
         // polling: true,
       });
@@ -66,8 +66,8 @@ export default {
         .map((i) => `_${i.product.name}_ x${i.count}, ${i.cartItemPrice}р`)
         .join('\n');
 
-      const userName = order.name.replace('+7', '8');
-      const userPhone = order.phone.replace('+7', '8');
+      const userName = escapeTelegramEntities(order.name);
+      const userPhone = escapeTelegramEntities(order.phone);
 
       let addressString = `${order.address.street} ${order.address.house}`;
       if (order.address.apartment) {
@@ -83,10 +83,15 @@ export default {
         addressString += `, домофон ${order.address.intercom}`;
       }
 
-      bot
-        .sendMessage(
-          process.env.TELEGRAM_ADMIN_CHAT_ID,
-          `*Заказ №${order.id}*
+      const orderComment = order.comment
+        ? `\n\n*Комментарий к заказу:*\n${escapeTelegramEntities(
+            order.comment,
+          )}`
+        : '';
+
+      console.log('orderComment', orderComment);
+
+      const messageToAdminChat = `*Заказ №${order.id}*
 
 *Состав заказа:*
 ${cartString}
@@ -101,12 +106,13 @@ ${cartString}
 Телефон: [${userPhone}](${userPhone})
 
 *Адрес доставки:*
-${addressString}
-`,
-          {
-            parse_mode: 'MarkdownV2',
-          },
-        )
+${addressString}${orderComment}
+      `;
+
+      bot
+        .sendMessage(process.env.TELEGRAM_ADMIN_CHAT_ID, messageToAdminChat, {
+          parse_mode: 'MarkdownV2',
+        })
         .catch((error) => {
           console.error(
             'Ошибка при отправке telegram-сообщения администратору:',
@@ -131,6 +137,4 @@ ${addressString}
       ctx.body = err;
     }
   },
-
-  /* Booking payment */
 };
