@@ -39,7 +39,7 @@ export default async function StaticPage({
 
       <div className="container">
         {title && (
-          <h1 className="text-4xl font-medium mb-12 md:mb-7 md:text-3xl">
+          <h1 className="text-5xl font-medium mb-12 md:mb-7 md:text-3xl">
             {title}
           </h1>
         )}

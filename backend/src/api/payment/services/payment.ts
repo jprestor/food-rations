@@ -36,6 +36,7 @@ export default factories.createCoreService(
         },
         confirmation: {
           type: 'redirect',
+          locale: 'ru_RU',
           return_url: `${CONFIRM_RETURN_URL}/`,
         },
         description: `Заказ №${order.id}`,
@@ -43,6 +44,8 @@ export default factories.createCoreService(
           orderId: order.id,
         },
       };
+
+      console.log('payment2');
 
       return strapi.service('api::payment.payment')._createPayment(payload);
     },

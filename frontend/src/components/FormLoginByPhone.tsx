@@ -80,7 +80,7 @@ export default function FormLoginByPhone({
         </div>
       )}
 
-      <p className="text-xs text-base-content mt-4">
+      <p className="text-xs text-center text-base-content mt-4">
         Продолжая, вы соглашаетесь со сбором и обработкой{' '}
         <Link className="underline link" to={NAV.publicOffer} target="_blank">
           персональных данных

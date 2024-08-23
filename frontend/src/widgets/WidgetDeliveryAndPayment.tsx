@@ -13,7 +13,7 @@ export default function WidgetDeliveryAndPayment() {
   const [workingDays] = useMiscRef('workingDays');
 
   return (
-    <section className="v-margin !mb-10" data-name="WidgetExample">
+    <section className="v-margin mb-24 md:mb-10" data-name="WidgetExample">
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
           <div className="rounded-md bg-base-100 flex flex-col gap-4 p-5">
@@ -41,15 +41,6 @@ export default function WidgetDeliveryAndPayment() {
           </div>
 
           <div className="rounded-md bg-base-100 flex flex-col gap-4 p-5">
-            <h3 className="text-xl font-medium">Варианты оплаты</h3>
-            <ul className="list-disc pl-4">
-              <li>Картой на сайте</li>
-              <li>Картой курьеру</li>
-              <li>Наличными</li>
-            </ul>
-          </div>
-
-          <div className="rounded-md bg-base-100 flex flex-col gap-4 p-5">
             <h3 className="text-xl font-medium">Принимаем заказ по телефону</h3>
             <p>
               С {opening} до {closing}, {workingDays}, на сайте и по телефону{' '}
@@ -58,10 +49,38 @@ export default function WidgetDeliveryAndPayment() {
               </a>
             </p>
           </div>
-        </div>
-      </div>
 
-      <MapChooseAddress className="mt-10 h-[630px] md:h-[450px]" />
+          <div className="rounded-md bg-base-100 flex flex-col gap-4 p-5">
+            <h3 className="text-xl font-medium">Варианты оплаты</h3>
+            <ul className="list-disc pl-4">
+              <li>Картой на сайте</li>
+            </ul>
+
+            <div className="prose">
+              <p>
+                Для вашего удобства и безопасности мы предлагаем онлайн-оплату
+                заказов. Все платежи обрабатываются через надежный платежный
+                сервис ЮКасса (ранее известный как Яндекс.Деньги).
+              </p>
+              <p>
+                ЮКасса обеспечивает максимальную защиту ваших платежных данных,
+                соответствуя самым строгим международным стандартам безопасности
+                в сфере электронных платежей. Используя передовые технологии
+                шифрования и многоуровневую систему защиты, ЮКасса гарантирует
+                безопасность каждой транзакции.
+              </p>
+              <p>
+                Оплачивая заказ на нашем сайте, вы можете быть уверены, что ваши
+                личные и финансовые данные находятся под надежной защитой. Мы
+                ценим ваше доверие и заботимся о вашем спокойствии при каждом
+                заказе.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <MapChooseAddress className="mt-10 h-[600px] rounded-xl md:h-[450px]" />
+      </div>
     </section>
   );
 }

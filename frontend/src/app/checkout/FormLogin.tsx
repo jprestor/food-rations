@@ -7,9 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 import SendCodeModal from '@/components/SendCodeModal';
-import { Button, TextInput } from '@/ui';
+import { Button, TextInput, Link } from '@/ui';
 import { useIsAuthenticated } from '@/models/user';
-import { PHONE_REGEXP } from '@/constants';
+import { PHONE_REGEXP, NAV } from '@/constants';
 import { cn } from '@/lib';
 
 function FormLogin({ className }: { className?: string }) {
@@ -70,6 +70,17 @@ function FormLogin({ className }: { className?: string }) {
       >
         Далее
       </Button>
+
+      <p className="text-xs text-center max-w-sm mx-auto text-base-content mt-4">
+        Продолжая, вы соглашаетесь со сбором и обработкой{' '}
+        <Link className="underline link" to={NAV.publicOffer} target="_blank">
+          персональных данных
+        </Link>{' '}
+        и{' '}
+        <Link className="underline link" to={NAV.privacyPolicy} target="_blank">
+          пользовательским соглашением
+        </Link>
+      </p>
 
       {!isEmpty(errors) && (
         <div className="text-error pt-5 md:pt-3">

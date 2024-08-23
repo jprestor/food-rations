@@ -1,7 +1,7 @@
 @layer components {
   body::-webkit-scrollbar {
-    width: 5px; /* ширина scrollbar */
-    height: 5px;
+    width: 12px; /* ширина scrollbar */
+    height: 12px;
   }
   body::-webkit-scrollbar-track {
     background: #f8f8f8; /* цвет дорожки */

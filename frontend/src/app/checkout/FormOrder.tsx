@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
 import UserAddresses from '@/components/UserAddresses';
-import { Button, TextInput } from '@/ui';
+import { Button, TextInput, Link } from '@/ui';
 import { useUser, useIsAuthenticated } from '@/models/user';
 import { useCart } from '@/models/cart';
 import {
@@ -17,7 +17,7 @@ import {
   useOrderPrices,
   useCreateOrder,
 } from '@/models/order';
-import { PHONE_REGEXP } from '@/constants';
+import { PHONE_REGEXP, NAV } from '@/constants';
 import { cn } from '@/lib';
 
 export default function FormOrder({ className }: { className?: string }) {
@@ -128,6 +128,22 @@ export default function FormOrder({ className }: { className?: string }) {
           Оплатить заказ
           {orderPrices?.totalPrice && ` на ${orderPrices.totalPrice} ₽`}
         </Button>
+
+        <p className="text-xs max-w-[378px] text-base-content mt-4">
+          Нажатием кнопки "Оплатить" я подтверждаю, что ознакомлен с{' '}
+          <Link
+            className="underline link"
+            to={NAV.privacyPolicy}
+            target="_blank"
+          >
+            Политикой конфиденциальности
+          </Link>{' '}
+          и с{' '}
+          <Link className="underline link" to={NAV.publicOffer} target="_blank">
+            Публичной офертой
+          </Link>{' '}
+          и принимаю все условия, изложенные в ней.
+        </p>
 
         {!isEmpty(errors) && (
           <div className="text-alert pt-7 text-lg">
