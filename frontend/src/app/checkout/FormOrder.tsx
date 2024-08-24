@@ -130,7 +130,7 @@ export default function FormOrder({ className }: { className?: string }) {
         </Button>
 
         <p className="text-xs max-w-[378px] text-base-content mt-4">
-          Нажатием кнопки "Оплатить" я подтверждаю, что ознакомлен с{' '}
+          Нажатием кнопки &quot;Оплатить&quot; я подтверждаю, что ознакомлен с{' '}
           <Link
             className="underline link"
             to={NAV.privacyPolicy}
