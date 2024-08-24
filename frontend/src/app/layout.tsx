@@ -7,6 +7,7 @@ import {
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import CookieConsentPrompt from '@/components/CookieConsentPrompt';
 import Providers from './providers';
 import { mainFont } from './fonts';
 import Toaster from '@/components/Toaster';
@@ -91,6 +92,7 @@ export default async function RootLayout({
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />
+              <CookieConsentPrompt />
             </div>
             <div id="portal-root" />
             <Toaster />
