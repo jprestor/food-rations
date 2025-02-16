@@ -79,7 +79,12 @@ export default function InfoModal({
           )}
         </div>
         <p className="text-sm text-gray_3 mb-3">{weight && <>{weight} г</>}</p>
-        <p className="text-sm mb-3">{description}</p>
+        {description && (
+          <p
+            className="text-sm mb-3"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        )}
         <div className="mt-auto">
           {productInCart.isInCart ? (
             <Button

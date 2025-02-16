@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Button, Svg, Link } from '@/ui';
-import { useMiscRef } from '@/models/misc';
-import { NAV } from '@/constants';
+import { Svg, Link } from '@/ui';
 import { cookies, cn } from '@/lib';
 
 export default function CookieConsentPrompt() {

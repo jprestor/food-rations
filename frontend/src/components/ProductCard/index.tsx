@@ -58,7 +58,12 @@ export default function ProductCard({
 
       <div className="flex grow flex-col p-5">
         <div className="text-lg mb-2.5">{name}</div>
-        <div className="text-sm mb-5 min-h-[3.5rem] grow">{description}</div>
+        {description && (
+          <div
+            className="text-sm mb-5 min-h-[3.5rem] grow"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        )}
         <div className="flex items-center justify-between">
           <div className="text-lg font-bold mr-3 flex-none">{price} ₽</div>
           {productInCart.isInCart ? (
