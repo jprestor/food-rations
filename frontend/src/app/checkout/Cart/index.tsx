@@ -49,14 +49,20 @@ export default function OrderCart() {
                   )} */}
                 <div className="flex justify-between">
                   <div className="mr-8">Доставка</div>
-                  <div>{deliveryPrice} ₽</div>
+                  {deliveryPrice ? (
+                    <div>{deliveryPrice} ₽</div>
+                  ) : (
+                    <div>Введите адрес доставки</div>
+                  )}
                 </div>
               </div>
 
-              <div className="font-semibold flex justify-between pt-5">
-                <div>Сумма заказа</div>
-                <div>{totalPrice} ₽</div>
-              </div>
+              {totalPrice && (
+                <div className="font-semibold flex justify-between pt-5">
+                  <div>Сумма заказа</div>
+                  <div>{totalPrice} ₽</div>
+                </div>
+              )}
             </div>
           )}
         </>

@@ -15,6 +15,7 @@ export default {
       const deliveryAddressCoords = await strapi
         .service('api::order.order')
         .getCoordsFromAddress(street, house);
+
       const deliveryZone: { cost: number } | undefined = await strapi
         .service('api::order.order')
         .getUserDeliveryZone(deliveryAddressCoords);

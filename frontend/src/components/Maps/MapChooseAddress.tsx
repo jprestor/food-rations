@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Map } from '@pbe/react-yandex-maps';
+import { Map, ZoomControl } from '@pbe/react-yandex-maps';
 import cn from 'classnames';
 
 import DeliveryZonePolygon from './DeliveryZonePolygon';
@@ -11,7 +11,7 @@ import {
 
 export default function MapChooseAddress({
   className,
-  zoom = 11,
+  zoom = 12,
 }: {
   className?: string;
   zoom?: number;
@@ -159,6 +159,8 @@ export default function MapChooseAddress({
             key={id}
           />
         ))}
+
+        <ZoomControl options={{ position: { left: 15, top: 150 } }} />
       </Map>
 
       {error && <div className="text-alert pt-[5px] text-sm">{error}</div>}
