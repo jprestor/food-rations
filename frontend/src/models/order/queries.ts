@@ -23,6 +23,21 @@ export const orderQueries = {
   }),
 };
 
+export function useSelectDeliveryAddress() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['delivery', 'set'],
+    mutationFn: setSelectedDeliveryAddress,
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        orderQueries.selectedDeliveryAddress().queryKey,
+        data,
+      );
+      queryClient.invalidateQueries(orderQueries.prices(data.coords));
+    },
+  });
+}
+
 export function useSelectedDeliveryAddress() {
   return useQuery(orderQueries.selectedDeliveryAddress()).data;
 }
@@ -45,25 +60,9 @@ export function useDeliveryAddressString() {
   });
 }
 
-// Mutations
 export function useCreateOrder() {
   return useMutation({
     mutationKey: [...orderQueries.baseKey, 'create'],
     mutationFn: createOrder,
-  });
-}
-
-export function useSelectDeliveryAddress() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey: ['delivery', 'set'],
-    mutationFn: setSelectedDeliveryAddress,
-    onSuccess: (data) => {
-      queryClient.setQueryData(
-        orderQueries.selectedDeliveryAddress().queryKey,
-        data,
-      );
-      queryClient.invalidateQueries(orderQueries.prices(data.coords));
-    },
   });
 }

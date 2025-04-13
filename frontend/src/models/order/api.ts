@@ -36,7 +36,32 @@ export async function getOrderPrices(deliveryAddressCoords?: number[]) {
   if (!res.ok) {
     throw new ApiError(getOrderPrices.name, await res.json(), res.status);
   }
+
   const resData: OrderPrices = await res.json();
+
+  return resData;
+}
+
+export async function getCoordsFromAddress({
+  street,
+  house,
+}: {
+  street: string;
+  house?: string;
+}) {
+  const params = {
+    street,
+    house,
+  };
+
+  const res = await api('/getCoordsFromAddress', params);
+
+  if (!res.ok) {
+    throw new ApiError(getCoordsFromAddress.name, await res.json(), res.status);
+  }
+
+  const resData: number[] = await res.json();
+
   return resData;
 }
 

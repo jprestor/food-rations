@@ -1,7 +1,3 @@
-/**
- * calculate-order-prices service
- */
-
 export default ({ strapi }) => ({
   async getOrderPrices(ctx) {
     const { coords }: { coords: string[] | undefined } = ctx.request.query;
@@ -20,5 +16,16 @@ export default ({ strapi }) => ({
       .getOrderPrices(deliveryZone);
 
     return prices;
+  },
+
+  async getCoordsFromAddress(ctx) {
+    const { street, house }: { street: string; house: string } =
+      ctx.request.query;
+
+    const deliveryAddressCoords = await strapi
+      .service('api::order.order')
+      .getCoordsFromAddress(street, house);
+
+    return deliveryAddressCoords;
   },
 });

@@ -9,20 +9,25 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
 import UserAddresses from '@/components/UserAddresses';
+import DeliveryAddressModal from '@/components/DeliveryAddressModal';
 import { Button, TextInput, Link } from '@/ui';
 import { useUser, useIsAuthenticated } from '@/models/user';
 import { useCart } from '@/models/cart';
 import {
+  useSelectDeliveryAddress,
   useSelectedDeliveryAddress,
   useOrderPrices,
   useCreateOrder,
+  getCoordsFromAddress,
 } from '@/models/order';
 import { PHONE_REGEXP, NAV } from '@/constants';
+import { useDebounce } from '@/hooks';
 import { cn } from '@/lib';
 
 export default function FormOrder({ className }: { className?: string }) {
   const user = useUser();
   const isAuthenticated = useIsAuthenticated();
+  const setDeliveryData = useSelectDeliveryAddress();
   const deliveryData = useSelectedDeliveryAddress();
   const createOrder = useCreateOrder();
   const cart = useCart();
@@ -50,6 +55,7 @@ export default function FormOrder({ className }: { className?: string }) {
   });
 
   const {
+    watch,
     handleSubmit,
     setError,
     reset,
@@ -68,6 +74,34 @@ export default function FormOrder({ className }: { className?: string }) {
       });
     }
   }, [isAuthenticated]);
+
+  /* Сохраняем данные о доставке, обновляем цену доставки */
+  const address = watch('address');
+  const debouncedStreet = useDebounce(address?.street);
+  const debouncedHouse = useDebounce(address?.house);
+
+  useEffect(() => {
+    if (debouncedStreet) {
+      let street = debouncedStreet;
+      let house = debouncedHouse;
+
+      getCoordsFromAddress({ street, house }).then((coords) =>
+        setDeliveryData.mutateAsync({ address: { street, house }, coords }),
+      );
+    }
+  }, [debouncedStreet, debouncedHouse]);
+
+  /* Задаем значение полей address если адрес поменялся из вне формы */
+  useEffect(() => {
+    if (deliveryData?.address) {
+      if (
+        deliveryData.address.street !== debouncedStreet ||
+        deliveryData.address.house !== debouncedHouse
+      ) {
+        setValue('address', deliveryData?.address);
+      }
+    }
+  }, [deliveryData?.coords]);
 
   const onSubmit = handleSubmit(async (formValues) => {
     try {
@@ -105,12 +139,19 @@ export default function FormOrder({ className }: { className?: string }) {
             </section>
           )}
 
-          <UserAddresses
-            onAddressCardSelect={(address) =>
-              address ? setValue('address', address) : resetField('address')
-            }
-            defaultShowAddressFields
-          />
+          <div className="">
+            <UserAddresses
+              onAddressCardSelect={(address) =>
+                address ? setValue('address', address) : resetField('address')
+              }
+              defaultShowAddressFields
+            />
+
+            <div className="mt-4">
+              <h4 className="font-medium mb-2">Выбрать адрес на карте</h4>
+              <DeliveryAddressModal />
+            </div>
+          </div>
 
           <TextInput
             label="Комментарий к заказу"

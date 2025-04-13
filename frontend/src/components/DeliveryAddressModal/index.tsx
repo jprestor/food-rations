@@ -5,11 +5,15 @@ import { MapChooseAddress } from '@/components/Maps';
 import { Modal } from '@/ui';
 import { useDeliveryAddressString } from '@/models/order';
 
-export default function DeliveryAddressModal() {
+export default function DeliveryAddressModal({
+  toggle,
+}: {
+  toggle?: React.ReactNode;
+}) {
   const addressString = useDeliveryAddressString();
 
   return (
-    <Modal toggle={<ModalToggle />} size="lg">
+    <Modal toggle={toggle || <ModalToggle />} size="lg">
       {({ setIsOpen }: any) => (
         <>
           <p className="text-3xl mb-6 text-center">Выберите адрес доставки</p>

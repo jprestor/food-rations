@@ -1,7 +1,3 @@
-/**
- * calculate-order-prices service
- */
-
 export default {
   async checkIsDeliveryAvailable(ctx) {
     const { request } = ctx;
