@@ -53,7 +53,7 @@ export default function SendCodeModal({
   const startTimer = async () => {
     setCounter(60);
     const data = await sendSmsCode({ name, phone });
-    setSmsCode(data.code.body);
+    // setSmsCode(data.code.body);
 
     intervalID.current = setInterval(() => {
       setCounter((prev) => {
