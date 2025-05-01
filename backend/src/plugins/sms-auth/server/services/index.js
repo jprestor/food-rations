@@ -91,7 +91,7 @@ module.exports = {
 
     async sendLoginCode(code) {
       const msg = `Ваш код для входа на сайт: ${code.body}`;
-      const apiId = 'dcfe6f36-ee79-77a4-75c2-00948e442f66';
+      const apiId = 'A4558099-42AE-22DA-6FD3-B8F27E1C6637';
       const response = await axios.get(
         `https://sms.ru/sms/send?api_id=${apiId}&to=${code.phone},74993221627&msg=${msg}&json=1`,
       );

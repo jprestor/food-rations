@@ -126,15 +126,15 @@ ${addressString}${orderComment}
         });
 
       // Send email to user
-      // const user = await strapi
-      //   .query('plugin::users-permissions.user')
-      //   .findOne({ where: { id: order.userId } });
+      const user = await strapi
+        .query('plugin::users-permissions.user')
+        .findOne({ where: { id: order.userId } });
 
-      // if (user.email) {
-      //   await strapi
-      //     .service('api::mailing-letter.mailing-letter')
-      //     .sendMailingLetter(user.email, 'user_payment_success');
-      // }
+      if (user.email) {
+        await strapi
+          .service('api::mailing-letter.mailing-letter')
+          .sendMailingLetter(user.email, 'user_payment_success');
+      }
 
       return order;
     } catch (err) {

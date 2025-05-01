@@ -33,7 +33,7 @@ export default function SendCodeModal({
   const login = useLogin();
 
   // Only for Test! Remove before production!!!
-  const [smsCode, setSmsCode] = useState('');
+  // const [smsCode, setSmsCode] = useState('');
 
   const onInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -81,11 +81,11 @@ export default function SendCodeModal({
         <p className="text-xl font-semibold mb-11">Введите полученный код</p>
 
         {/* Remove it before production! */}
-        {smsCode && (
+        {/* {smsCode && (
           <p className="text-lg text-base-content mb-7">
             Тестовый смс код: {smsCode}
           </p>
-        )}
+        )} */}
 
         <div className={cn('mb-14', error && 'mb-7')}>
           <input

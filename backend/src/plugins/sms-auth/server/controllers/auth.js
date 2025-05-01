@@ -28,8 +28,8 @@ module.exports = {
 
     try {
       const code = await authService.createCode(user.phone);
-      // await authService.sendLoginCode(code); // send sms
-      ctx.send({ user, code, sent: true }); // Убрать код и пользователя перед production
+      await authService.sendLoginCode(code); // send sms
+      ctx.send({ sent: true }); // Готово - Убрать код и пользователя перед production
     } catch (err) {
       return ctx.badRequest(err);
     }
