@@ -7,16 +7,21 @@ export default factories.createCoreService(
   'api::order.order',
   ({ strapi }) => ({
     async _createPayment(payload: ICreatePayment) {
-      const checkout = new YooCheckout({
-        shopId: process.env.YOOKASSA_SHOP_ID,
-        secretKey: process.env.YOOKASSA_SECRET_KEY,
-      });
+      try {
+        const checkout = new YooCheckout({
+          shopId: process.env.YOOKASSA_SHOP_ID,
+          secretKey: process.env.YOOKASSA_SECRET_KEY,
+        });
 
-      const idempotenceKey = uuid();
+        const idempotenceKey = uuid();
 
-      const payment = await checkout.createPayment(payload, idempotenceKey);
+        const payment = await checkout.createPayment(payload, idempotenceKey);
 
-      return payment;
+        return payment;
+      } catch (error) {
+        console.log('_createPayment error:', error);
+        return error;
+      }
     },
 
     async createOrderPayment(orderId: number) {
