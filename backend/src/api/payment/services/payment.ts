@@ -50,8 +50,6 @@ export default factories.createCoreService(
         },
       };
 
-      console.log('payment2');
-
       return strapi.service('api::payment.payment')._createPayment(payload);
     },
   }),

@@ -34,7 +34,12 @@ async function BannerSlider() {
                 href={i.link}
                 key={i.id}
               >
-                <div className="relative aspect-[3/1] sm:pb-[100%]">
+                <div
+                  className={cn(
+                    'relative aspect-[3/1] md:aspect-[1/1]',
+                    // i.imageMobile && '',
+                  )}
+                >
                   <Image
                     className="rounded-2xl md:!hidden"
                     data={i.image}
