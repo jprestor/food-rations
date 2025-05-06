@@ -7,13 +7,18 @@ import { useDeliveryAddressString } from '@/models/order';
 
 export default function DeliveryAddressModal({
   toggle,
+  toggleClassName,
 }: {
   toggle?: React.ReactNode;
+  toggleClassName?: string;
 }) {
   const addressString = useDeliveryAddressString();
 
   return (
-    <Modal toggle={toggle || <ModalToggle />} size="lg">
+    <Modal
+      toggle={toggle || <ModalToggle className={toggleClassName} />}
+      size="lg"
+    >
       {({ setIsOpen }: any) => (
         <>
           <p className="text-3xl mb-6 text-center">Выберите адрес доставки</p>

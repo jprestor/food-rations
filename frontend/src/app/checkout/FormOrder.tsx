@@ -147,9 +147,9 @@ export default function FormOrder({ className }: { className?: string }) {
               defaultShowAddressFields
             />
 
-            <div className="mt-4">
+            <div className="mt-4 md:mt-5">
               <h4 className="font-medium mb-2">Выбрать адрес на карте</h4>
-              <DeliveryAddressModal />
+              <DeliveryAddressModal toggleClassName="sm:flex" />
             </div>
           </div>
 

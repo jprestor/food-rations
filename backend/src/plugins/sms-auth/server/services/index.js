@@ -93,14 +93,14 @@ module.exports = {
       const msg = `Ваш код для входа на сайт: ${code.body}`;
       const apiId = 'A4558099-42AE-22DA-6FD3-B8F27E1C6637';
 
-      console.log('code.phone', code.body);
-      console.log('code.phone', code.phone);
+      // console.log('code.body', code.body);
+      // console.log('code.phone', code.phone);
 
       const response = await axios.get(
         `https://sms.ru/sms/send?api_id=${apiId}&to=${code.phone}&msg=${msg}&json=1`,
       );
 
-      console.log('response.data', response.data);
+      // console.log('response.data', response.data);
 
       return response.data;
     },

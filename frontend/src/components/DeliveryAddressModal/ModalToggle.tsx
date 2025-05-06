@@ -2,12 +2,18 @@
 
 import { Svg } from '@/ui';
 import { useDeliveryAddressString } from '@/models/order';
+import { cn } from '@/lib';
 
-export default function ModalToggle() {
+export default function ModalToggle({ className }: { className?: string }) {
   const addressString = useDeliveryAddressString();
 
   return (
-    <a className="text-base-content link flex h-10 items-center justify-center rounded-2xl bg-base-100 px-4 sm:hidden">
+    <a
+      className={cn(
+        'text-base-content link flex h-10 items-center justify-center rounded-2xl bg-base-100 px-4 sm:hidden',
+        className,
+      )}
+    >
       {addressString.data ? (
         <span className="mr-2.5 flex items-center gap-2">
           <span className="font-semibold">Доставка</span>

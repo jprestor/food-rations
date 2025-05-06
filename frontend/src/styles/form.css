@@ -1,10 +1,10 @@
 @layer components {
   .field-wrapper {
-    @apply relative block;
+    @apply relative block overflow-hidden;
   }
 
   .field-input {
-    @apply border-base-100 hocus:border-primary rounded-lg bg-base-100 h-14 w-full border pt-4 px-5 outline-none placeholder:opacity-0 sm:h-12;
+    @apply border-base-100 hocus:border-primary rounded-lg bg-base-100 h-14 w-full border pt-4 md:px-3 px-5 outline-none placeholder:opacity-0 sm:h-12;
 
     /* &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -31,7 +31,7 @@
   }
 
   .field-label {
-    @apply text-base-content absolute left-5 top-4 transition;
+    @apply text-base-content absolute left-5 top-4 md:left-3 transition;
   }
 
   .field-error {
