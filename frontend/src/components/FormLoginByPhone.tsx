@@ -53,6 +53,8 @@ export default function FormLoginByPhone({
 
   const userPhone = watch('phone');
 
+  console.log('userPhone', userPhone);
+
   return (
     <form className={className} onSubmit={handleSubmit(onFormSubmit)}>
       <h2 className="mb-5 text-3xl font-semibold">Войти</h2>
